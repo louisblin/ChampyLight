@@ -1,0 +1,98 @@
+// -------------------------------------------------------------------------
+// DMX libray for Velleman K8062 / VM116
+// -------------------------------------------------------------------------
+//
+// This source code creates a C library that can be used to control DMX
+// compatible lights using the Velleman K8062 | VM116 USB to DMX light
+// controller. It is based on code that can be found here:
+//
+// http://k8062forlinux.sourceforge.net/index.php
+//
+// -------------------------------------------------------------------------
+//
+// Prerequisites:
+//
+// You will need to get the libusb development package so that the code
+// can communicate with USB devices. You can install this package wit the
+// command:
+//
+// sudo apt-get install libusb-dev
+//
+// -------------------------------------------------------------------------
+// 
+// Usage:
+//
+// The interface between the USB and the DMX controller is accomplished 
+// using an executable deamon that runs in the background. A shared memory
+// segment is set up between the application and this deamon that allows
+// the deamon to update values as a periodic rate to the USB connection.
+// 
+// In order for the DMX library to work properly, you must launch the deamon
+// and have it running. You can launch the deamon using the command:
+//
+// sudo ./dmxd
+//
+// -------------------------------------------------------------------------
+//
+// Interface:
+//
+// There are only a few functions required to send DMX data. The fist call
+// that must be made is dmxOpen(), which establishes the shared memory 
+// connection to the running deamon. Likewise the call to dmxClose() terminates
+// this connection. 
+//
+// int  dmxOpen           ();
+// void dmxClose          ();
+//
+// Once the connection is opened, you must specify the maximum channel Id that
+// you will be sending. This tells the deamon how many channels need to be
+// processed and sent. This value can be between 1 and 512:
+//
+// void dmxSetMaxChannels ( int maxChannels );
+//
+// The final function sets the value for a given channel. The channel must be
+// between 1 and maxChannels, and the value must be between 0 and 255:
+//
+// void dmxSetValue       ( ubyte channel , ubyte value );
+//
+// -------------------------------------------------------------------------
+//
+// K8062 USB Protocol:
+//
+// The controller is a standard USB HID device. Data is sent by packets of 
+// 8 bytes. In the following tables, d0, d1, ... are DMX channel values and n 
+// is a number of consecutive channels whose value is 0.
+//
+// The program needs to send the packets in sequence to transmit some DMX data 
+// on the DMX output of the interface. If all 512 channels are sent, it'll take
+//  about 25ms to send the whole DMX sequence.
+//
+//  Packet 1 : Start of Data ( command 4 )
+//
+// The first packet that must be sent instructs the controller to begin
+// accept data. This packet contains the command header (4), the number of
+// channels to assume are zero (from channel 1), and then the first
+// significant 6 channels of data in order. In this way all zero channels
+// that preceed actual channel data do not need to be specified:
+//
+//  4	n+1	d0	d1	d2	d3 	d4	d5
+//
+//  Packet 2 : Bulk Data ( command 2 )
+//
+// After the first of up to 6 channels have been sent, additional channels
+// are sent contiguously 8 channels at a time using the bulk data command. This
+// command contains the header (2), and then 7 additional channels:
+//
+//  2	d0	d1	d2	d3 	d4	d5	d6
+//
+//  Packet 3 : End of Data ( command 3 )
+//
+// The preceeding command can be used with channels up to 512, but may not
+// exceed it. Any remaining channel data that needs to be sent that is not
+// able to fit into the preceeding packet is send with a final command. This
+// command contains the header (3), the number of remaining channels, and
+// then remaining channel data:
+//
+// 3	d0	??	??	?? 	??	??	??
+//
+// -------------------------------------------------------------------------
