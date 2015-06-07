@@ -42,6 +42,8 @@ int dmxOpen()
     maxChanAddr  = ( int * ) shm;
     exitAddr     = ( ubyte * ) maxChanAddr + 2;
     chanData     = ( ubyte * ) maxChanAddr + 3;
+    
+    return 0;
 }
 
 // ==========================================================================

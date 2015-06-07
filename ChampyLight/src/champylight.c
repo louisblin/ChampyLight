@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 #include "constants.h"
 #include "dmx.h"                              // DMX interface library
@@ -15,79 +16,53 @@
 
 int main( int argc, char *argv[] ) {
 
-    int error;
-
-    // Initialize connection with web page
-    error = initConnection();
-    if (error < 0) return (error);
-
     // Initialize DMX connection
-    error = initDMX();
+    int error = initDMX();
     if (error < 0) return (error);
 
     // Main program loop
     while (isRunning()) {
-    
+   
+        uint8_t values[CHANNELS_COUNT] = {0};
+        fetchValues(values);
+        setDMXColor(0, CHANNELS_COUNT, values);
+
+        // Suspend before next update
+        sleep(REFRESH_TI);
     }
     
     // Terminate
     exitDMX();
-    closeConnection(); 
 
     return EXIT_SUCCESS;
 }
 
-// ===========================================================================
-// initConnection -- initialize web connection
-// ===========================================================================
-
-int initConnection() {
-
-    return -1;
+void fetchValues(uint8_t values[]) {
+    
 }
-
-// ===========================================================================
-// closeConnection -- closes web connection
-// ===========================================================================
-
-void closeConnection() {
-
-}
-
-// ===========================================================================
-// initDMX -- initialize DMX interface
-// ===========================================================================
 
 int initDMX() {
 
-  // Open DMX interface
-  int success = dmxOpen();
-  if (success < 0) return success;
+    // Open DMX interface
+    int success = dmxOpen();
+    if (success < 0) return success;
 
-  // Return valid status
-  return 0;
+    // Return valid status
+    return 0;
 }
 
-// ===========================================================================
-// setDMXColor -- set the color values for the DMX device
-// ===========================================================================
-
-void setDMXColor(unsigned int from, int count, double values[]) {
+void setDMXColor(unsigned int fromCh, int count, uint8_t values[]) {
     
     // Set the channel colors
-    for (int ch = from; ch < count; ch++) {
+    for (int ch = fromCh + CHAN_INDEX; ch < count; ch++) {
         dmxSetValue(ch, values[ch]);
     }
 }
 
-// ===========================================================================
-// exitDMX -- terminate the DMX interface
-// ===========================================================================
-
 void exitDMX() {
 
     // Blackout
-    double zeros[CHANNELS_COUNT] = {0};
+    uint8_t zeros[CHANNELS_COUNT] = {0};
     setDMXColor(0, CHANNELS_COUNT, zeros);
 
     // Close the DMX connection

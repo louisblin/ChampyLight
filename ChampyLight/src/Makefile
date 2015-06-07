@@ -1,8 +1,8 @@
 CC      = gcc
-CFLAGS  = -Wall -Werror -pedantic -std=c99
+CFLAGS  = -Wall -Werror -pedantic -std=c99 -D_BSD_SOURCE -D_POSIX_SOURCE
 
 TARGET  = champylight
-OBJECTS = champylight.o dmx.o utils.o
+OBJECTS = champylight.o dmx.o utils.o webclient.o
 
 .PHONY: all clean
 

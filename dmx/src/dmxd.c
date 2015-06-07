@@ -132,7 +132,7 @@ int main() {
         
         if ( !success ) {
             printf  ( "%s: DMX send errorn" , ProgName );
-            *exitAddr++;
+            (*exitAddr)++;
         }
         
         
@@ -286,7 +286,7 @@ int initUSB()
     usb_find_busses();
     usb_find_devices();
     
-    usb_device_descriptor *descr = 0x0;
+    struct usb_device_descriptor *descr = 0x0;
     
     for ( bus = usb_busses; bus; bus = bus -> next ) {
         
@@ -325,8 +325,8 @@ int initUSB()
     // claim the interface
     
     
-    #if     defined(LIBUSB_HAS_GET_DRIVER_NP)
-    && defined(LIBUSB_HAS_DETACH_KERNEL_DRIVER_NP)
+    #if defined(LIBUSB_HAS_GET_DRIVER_NP) \
+        && defined(LIBUSB_HAS_DETACH_KERNEL_DRIVER_NP)
     
     usb_detach_kernel_driver_np( udev, 0);
     
@@ -353,7 +353,7 @@ int initUSB()
     
     if ( success != 0 ) {
         
-        printf ( "%s: error claiming interface [%d]n" , success );
+        printf ("Error claiming interface [%d]n" , success );
         return ( 0 );
     }
     
@@ -378,7 +378,7 @@ int writeUSB ( ubyte *data , int numBytes )
     
     if ( nSent != numBytes ) {
         
-        printf ( "%s: error writing [%d] bytes [%d]n" , numBytes , nSent );
+        printf ( "Error writing [%d] bytes [%d]n" , numBytes , nSent );
         return ( 0 );
     }
     
