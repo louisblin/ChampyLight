@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include <sys/time.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -18,11 +19,6 @@
 
 #include "constants.h"
 #include "tcpclient.h"
-
-int main(void) {
-    getWebValues(NULL);
-    return 0;
-}
 
 void getWebValues(uint8_t *values) {
 
