@@ -1,2 +1,27 @@
-*.o
+#ignore temp files
+*~
+
+#ignore pdf/txt files (just keep source files)
+*.pdf
 *.txt
+
+#ignore junk files from latex output
+*.out
+*.log
+*.aux
+
+#ignore junk files from compiling C code
+*.o
+
+#ignore junk files from compiling C libs
+*.a
+
+#ignore executables
+*.bin
+champylight
+
+#ignore other junk files
+*.backup
+*.kate-swp
+*.swp
+*.ps

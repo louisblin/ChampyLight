@@ -1,5 +1,6 @@
 CC      = gcc
-CFLAGS  = -Wall -Werror -pedantic -std=c99 -D_BSD_SOURCE -lcurl #-D_POSIX_SOURCE
+CFLAGS  = -Wall -Werror -pedantic -std=c99 -D_BSD_SOURCE #-D_POSIX_SOURCE
+LIB     = -lcurl
 
 TARGET  = champylight
 OBJECTS = champylight.o dmx.o utils.o curlClient.o
@@ -9,7 +10,7 @@ OBJECTS = champylight.o dmx.o utils.o curlClient.o
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) -o $@ $^ $(CFLAGS) $(LIB) 
 
 clean:
 	rm -rf $(TARGET) $(OBJECTS)

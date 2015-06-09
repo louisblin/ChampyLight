@@ -33,9 +33,9 @@
 #include <string.h>
 #include <errno.h>
 
+#define VERBOSE
 
 // dmx data and control registers
-
 typedef unsigned char ubyte;
 
 int   * maxChanAddr;      // control register for # of channels to update
@@ -90,15 +90,16 @@ int main() {
     struct timeval now,next,diff,delay;
     int success;
     
-    printf ( "%s: starting dmx deamonn" , ProgName );
-    
-    
+    #ifdef VERBOSE
+    printf("%s: Starting dmx deamon\n", ProgName);
+    #endif    
+
     // intialize USB device
     
     success = initUSB();
     
     if ( !success ) {
-        printf ( "%s: error initializing USB interfacen" , ProgName );
+        printf ( "%s: Error initializing USB interface\n" , ProgName );
         return ( -1 );
     }
     
@@ -107,7 +108,7 @@ int main() {
     success = initSHM();
     
     if ( !success  ) {
-        printf ( "%s: error initializing shared memoryn" , ProgName );
+        printf ( "%s: Error initializing shared memory\n" , ProgName );
         return ( -2 );
     }
     
@@ -131,7 +132,7 @@ int main() {
         success = sendDMX();
         
         if ( !success ) {
-            printf  ( "%s: DMX send errorn" , ProgName );
+            printf  ( "%s: DMX send error\n" , ProgName );
             (*exitAddr)++;
         }
         
@@ -151,8 +152,9 @@ int main() {
         
     }
     
-    printf ( "%s: dmx deamon is shutting downn" , ProgName );
-    
+    #ifdef VERBOSE    
+    printf ( "%s: dmx deamon is shutting down\n" , ProgName );
+    #endif
     
     // on shutdown reset all DMX channels
     
@@ -209,7 +211,7 @@ int sendDMX ()
     int success = writeUSB ( data , 8 );
     
     if ( !success ) {
-        printf ( "%s: error sending DMX start packetn" , ProgName );
+        printf ( "%s: Error sending DMX start packet\n" , ProgName );
         return ( 0 );
     }
     
@@ -235,7 +237,7 @@ int sendDMX ()
     success = writeUSB ( data , 8 );
     
     if ( !success ) {
-        printf ( "%s: error sending DMX bulk packetn" , ProgName );
+        printf ( "%s: Error sending DMX bulk packet\n" , ProgName );
         return ( 0 );
     }
     
@@ -245,8 +247,9 @@ int sendDMX ()
     
     data[0] = 5;   // packet header for single channeld data
     
-    printf ( "sending %d channelsn" , numChans );
-    
+    #ifdef VERBOSE
+    printf ( "Sending %d channels\n" , numChans );
+    #endif 
     
     for ( int chIdx = 0; chIdx < numChans; chIdx++ )
     {
@@ -255,7 +258,7 @@ int sendDMX ()
         int success = writeUSB ( data , 8 );
         
         if ( !success ) {
-            printf ( "%s: error sending DMX data packetn" , ProgName );
+            printf ( "%s: Error sending DMX data packet\n" , ProgName );
             return ( 0 );
         }
     }
@@ -292,8 +295,10 @@ int initUSB()
         
         for ( dev = bus->devices; dev; dev = dev -> next ) {
             
-            printf ( "%s: checking device [%s]n" , ProgName , dev -> filename );
-            
+            #ifdef VERBOSE
+            printf ( "%s: Checking device [%s]\n" , ProgName , dev -> filename );
+            #endif
+
             descr = & dev->descriptor;
             
             if (      ( descr -> idVendor == VendorID )
@@ -302,23 +307,27 @@ int initUSB()
     }
     
     if ( !dev ) {
-        printf ( "%s: DMX device not found on USBn" , ProgName );
+        printf ( "%s: DMX device not found on USB\n" , ProgName );
         return ( 0 );
     }
     
     
     // open the device
     
-    printf ( "%s: opening device [%s] ... " , ProgName , dev -> filename );
-    
+    #ifdef VERBOSE
+    printf ( "%s: Opening device [%s] ... \n" , ProgName , dev -> filename );
+    #endif
+
     udev = usb_open ( dev );
     
     if ( udev == 0x0 ) {
-        printf ( "%s: error opening devicen" , ProgName );
+        printf ( "%s: Error opening device\n" , ProgName );
         return ( 0 );
     }
     else {
-        printf ( "okn" );
+        #ifdef VERBOSE
+        printf ( "Ok\n" );
+        #endif
     }
     
     
@@ -341,7 +350,7 @@ int initUSB()
     success = usb_set_configuration ( udev, 1 );
     
     if ( success != 0 ) {
-        printf ( "%s: configuration error [%d]n" , ProgName , success );
+        printf ( "%s: Configuration error [%d]\n" , ProgName , success );
         return ( 0 );
         
     }
@@ -353,7 +362,7 @@ int initUSB()
     
     if ( success != 0 ) {
         
-        printf ("Error claiming interface [%d]n" , success );
+        printf ("Error claiming interface [%d]\n" , success );
         return ( 0 );
     }
     
@@ -378,7 +387,7 @@ int writeUSB ( ubyte *data , int numBytes )
     
     if ( nSent != numBytes ) {
         
-        printf ( "Error writing [%d] bytes [%d]n" , numBytes , nSent );
+        printf ( "Error writing [%d] bytes [%d]\n" , numBytes , nSent );
         return ( 0 );
     }
     
@@ -403,35 +412,42 @@ void exitUSB()
 int initSHM()
 {
     
-    printf ( "%s: creating shared memory segment ... " , ProgName );
-    
+    #ifdef VERBOSE
+    printf ( "%s: Creating shared memory segment ... \n" , ProgName );
+    #endif 
     
     // create the shared memory segment
     
     shmid = shmget ( 0x56444D58 , sizeof ( ubyte ) * 515 , IPC_CREAT | 0666 );
     
     if ( shmid == -1 ) {
-        printf ( "error creating shared memory segment [%d]n" , errno );
+        printf ( "Error creating shared memory segment [%d]\n" , errno );
         return ( 0 );
     }
-    else
-    printf ( "okn" );
+    else {
+        #ifdef VERBOSE
+        printf ( "ok\n" );
+        #endif
+    }
     
     
     // attach to segment and initialize
     
-    
-    printf ( "%s: intitalizing segment [0x%x] ... " , ProgName , shmid );
-    
+    #ifdef VERBOSE
+    printf ( "%s: Initializing segment [0x%x] ... \n" , ProgName , shmid );
+    #endif
+
     shm = ( ubyte * ) shmat ( shmid , NULL , 0 );
     
     if ( shm == 0x0 ) {
-        printf ( "error connecting to segment [%d]n" , errno );
+        printf ( "Error connecting to segment [%d]\n" , errno );
         return ( 0 );
     }
-    else
-    printf ( "okn" );
-    
+    else {
+        #ifdef VERBOSE
+        printf ( "ok\n" );
+        #endif
+    }
     
     memset ( shm , 0 , sizeof ( ubyte ) * 515 );
     

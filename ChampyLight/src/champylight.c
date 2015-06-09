@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h> 
 #include <unistd.h>
 
 #include "curlClient.h"
@@ -16,34 +17,29 @@
 #include "dmx.h"                              // DMX interface library
 #include "champylight.h"
 
-int main( int argc, char *argv[] ) {
+int main( int argc, char *argv[]) {
 
     // Initialize DMX connection
     int error = initDMX();
     if (error < 0) return (error);
 
+    uint8_t *values = calloc(CHANNELS_COUNT, sizeof(uint8_t));
+    printf("values[0] = %d\n", values[0]);
+
     // Main program loop
     while (isRunning()) {
    
-        uint8_t values[CHANNELS_COUNT] = {0};
-        fetchValues(values);
-        setDMXColor(0, CHANNELS_COUNT, values);
+        //getWebValues(values);
+        //setDMXColor(0, CHANNELS_COUNT, values);
 
         // Suspend before next update
         sleep(REFRESH_TI);
     }
     
     // Terminate
-    exitDMX();
+    exitDMX(values);
 
     return EXIT_SUCCESS;
-}
-
-void fetchValues(uint8_t values[]) {
-    #ifdef VERBOSE
-    printf("Fetching...\n");
-    #endif
-    //getWebValues(values);
 }
 
 int initDMX() {
@@ -64,11 +60,11 @@ void setDMXColor(unsigned int fromCh, int count, uint8_t values[]) {
     }
 }
 
-void exitDMX() {
+void exitDMX(uint8_t *values) {
 
     // Blackout
-    uint8_t zeros[CHANNELS_COUNT] = {0};
-    setDMXColor(0, CHANNELS_COUNT, zeros);
+    memset(values, 0, CHANNELS_COUNT);
+    free(values);
 
     // Close the DMX connection
     dmxClose();

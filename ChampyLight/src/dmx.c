@@ -37,9 +37,13 @@ int dmxOpen() {
     shm = (uint8_t*) shmat (shmid, NULL, 0);
 
     maxChanAddr  = (uint16_t*) shm;
-    exitAddr     = (uint8_t*) maxChanAddr + EXIT_INDEX;
-    chanData     = (uint8_t*) maxChanAddr + CHAN_INDEX;
+    exitAddr     = (uint8_t*) shm + 2;
+    chanData     = (uint8_t*)  exitAddr + 1;
     *maxChanAddr = CHANNELS_COUNT;
+
+    printf("\nmaxChanAddr %p => %d", maxChanAddr, *maxChanAddr);
+    printf("\nexitAddr %p => %d", exitAddr, *exitAddr);
+    printf("\nchanData %p => %d", chanData, *chanData);
 
 #ifdef VERBOSE
     printSHM(CHANNELS_COUNT, shm);
@@ -63,5 +67,10 @@ uint8_t dmxGetValue(uint8_t channel) {
 }
 
 bool isRunning() {
+    
+    printf("GOT HERE and %d\n", 4);
+    //printf("GOT HERE and %c\n", *exitAddr);
+    return 1;
+
     return *exitAddr == 0;
 }

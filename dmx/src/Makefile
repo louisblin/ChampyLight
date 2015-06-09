@@ -1,4 +1,4 @@
-CC=g++
+CC=gcc
 DEAMONOBJS=dmxd.o
 LIBOJBS=dmx.o
 OBJS=$(LIBOBJS) $(DEAMONOBJS)
@@ -15,7 +15,7 @@ all: $(LIB) $(DEAMONBIN) $(TESTBIN)
 	$(CC) $(CFLAGS) $(INCLUDES) -g -c $< -o $@ -Wno-deprecated-declarations
 
 dmxd.bin: $(DEAMONOBJS)
-	$(CC) -o $@ -Wl,--whole-archive $(DEAMONOBJS) $(LDFLAGS) -Wl,--no-whole-archive -rdynamic
+	$(CC) -o $@ -Wl, $(DEAMONOBJS) $(LDFLAGS) -Wl, -rdynamic
 	mv dmxd.bin ../deamon
 
 

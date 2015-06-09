@@ -14,10 +14,6 @@
 #define REMOTE_ADDR     "www.doc.ic.ac.uk/~lb3214/champyvote/renderCSV.php"
 #define TCP_OUT         "curl_output.txt"
 
-#define CHUNK_SIZE      512  // Must be big enough to contain the header
-#define ARG_SIZE        500
-#define REQ_SIZE        1000
-
 #define VERBOSE
 
 #endif
