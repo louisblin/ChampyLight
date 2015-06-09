@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include <unistd.h>
 
+#include "curlClient.h"
 #include "constants.h"
 #include "dmx.h"                              // DMX interface library
 #include "champylight.h"
@@ -39,7 +40,10 @@ int main( int argc, char *argv[] ) {
 }
 
 void fetchValues(uint8_t values[]) {
-    
+    #ifdef VERBOSE
+    printf("Fetching...\n");
+    #endif
+    //getWebValues(values);
 }
 
 int initDMX() {
