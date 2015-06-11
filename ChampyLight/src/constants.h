@@ -23,11 +23,11 @@
 #define TCP_OUT         "curl_output.txt"
 
 // Dmx operations
-#define REFRESH_TI      1.0f  // Time interval between each fetch-dec-ex cycle
-#define CRES_EXP        2.85f // Exponent of crescendo coef function
-#define DECR_EXP        0.35f // Exponent of decrescendo coef function
-#define DMX_REFRESH_TI  100   // Time interval between to DMX packets
-#define STROBE_LENGTH   3.0f  // Time length of the strobe effect          
+#define REFRESH_TI      1000  // TI between 2 fetch-dec-ex cycles  (MILLIS)
+#define CRES_EXP        2.85f // Exp of crescendo coef function
+#define DECR_EXP        0.35f // Exp of decrescendo coef function
+#define DMX_REFRESH_TI  100   // TI between 2 DMX packets  (MILLIS)
+#define STROBE_LENGTH   3000  // Time length of the strobe effect (MILLIS)
 
 // Utils
 #define VERBOSE

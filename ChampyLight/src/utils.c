@@ -6,6 +6,9 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
+#include <time.h>
+#include <unistd.h>
 
 #include "constants.h"
 #include "utils.h"
@@ -36,3 +39,20 @@ uint8_t* arrcp(uint8_t const *src, size_t length) {
     memcpy(p, src, length * sizeof(uint8_t));
     return p;
 }
+
+void sleep_ms (int millis) {
+
+    if (millis <= 0) {
+        return;
+    }
+
+#if _POSIX_C_SOURCE >= 199309L
+    struct timespec ts;
+    ts.tv_sec = 0;
+    ts.tv_nsec = millis * 1000000;
+    nanosleep(&ts, NULL);
+#else
+    usleep(millis * 1000);
+#endif
+}
+

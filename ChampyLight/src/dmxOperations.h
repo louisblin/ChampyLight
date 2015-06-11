@@ -51,6 +51,4 @@ inline static double decr(const double t);
 void startTime(struct timeval *t0);
 int updateTime(struct timeval *t0, struct timeval *t1, 
                                          unsigned int sleepTime);
-void sleep_ms (int millis);
-
 #endif

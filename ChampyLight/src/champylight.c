@@ -13,6 +13,7 @@
 #include <unistd.h>
 
 #include "constants.h"
+#include "utils.h"
 #include "dmx.h"                              // DMX interface library
 #include "curlClient.h"
 #include "dmxOperations.h"
@@ -35,7 +36,7 @@ int main( int argc, char *argv[]) {
         executeDMX(exec, shmValues);
 
         // Suspend before next update
-        sleep(REFRESH_TI);
+        sleep_ms(REFRESH_TI);
         break;
     }
     

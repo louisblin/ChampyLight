@@ -3,9 +3,7 @@
 #include <stdint.h>
 #include <math.h>
 #include <sys/time.h>
-#include <time.h>
 #include <stdbool.h>
-#include <unistd.h>
 
 #include "utils.h"
 #include "dmx.h"
@@ -137,7 +135,7 @@ void executeStrobe(dmx_exec_t *in, uint8_t startValues[]) {
         // Sleep for the time interval given: fade_ti
         millis_elapsed += updateTime(&t0, &t1, in->fade_ti);
 
-    } while(millis_elapsed < STROBE_LENGTH * 1000);
+    } while(millis_elapsed < STROBE_LENGTH);
 
     // Set to end values
     dmxSetValues(0, CH_COUNT, startValues);
@@ -157,26 +155,9 @@ int updateTime(struct timeval *t0, struct timeval *t1,
 #endif
 
     sleep_ms(sleepTime);
-    //sleep(sleepTime / 100);
 
     // Compute elapsed time... | t1
     gettimeofday(t1, 0);
     return (t1->tv_sec - t0->tv_sec) * 1000.0 
                 + (t1->tv_usec - t0->tv_usec) / 1000.0; 
-}
-
-void sleep_ms (int millis) {
-
-    if (millis <= 0) {
-        return;
-    }
-
-#if _POSIX_C_SOURCE >= 199309L
-    struct timespec ts;
-    ts.tv_sec = 0;
-    ts.tv_nsec = millis * 1000000;
-    nanosleep(&ts, NULL);
-#else
-    usleep(millis * 1000);
-#endif
 }
