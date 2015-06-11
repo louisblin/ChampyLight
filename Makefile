@@ -1,6 +1,6 @@
-CdC=g++
+CdC=gcc
 
-TARGETS=dmx DMXWheel
+TARGETS=dmx champylight
 
 all: $(TARGETS)
 	for i in $(TARGETS); \

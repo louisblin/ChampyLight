@@ -1,6 +1,6 @@
 // ===========================================================================
 // champylight.c - a simple program that sets the color on a DMX device using
-//                 values fetched from the web.
+//                 Values fetched from the web.
 //
 // Code based on DMXWHEEL project - www.dmxwheel.com.
 // ===========================================================================
@@ -12,59 +12,54 @@
 #include <string.h> 
 #include <unistd.h>
 
-#include "curlClient.h"
 #include "constants.h"
 #include "dmx.h"                              // DMX interface library
+#include "curlClient.h"
+#include "dmxOperations.h"
 #include "champylight.h"
 
 int main( int argc, char *argv[]) {
 
-    // Initialize DMX connection
-    int error = initDMX();
-    if (error < 0) return (error);
+    uint8_t *webValues = calloc(WEB_SIZE, sizeof(uint8_t));
+    uint8_t *shmValues = NULL;
 
-    uint8_t *values = calloc(CHANNELS_COUNT, sizeof(uint8_t));
-    printf("values[0] = %d\n", values[0]);
+    // Initialize DMX connection
+    int error = initDMX(&shmValues);
+    if (error < 0) return (error);
 
     // Main program loop
     while (isRunning()) {
    
-        //getWebValues(values);
-        //setDMXColor(0, CHANNELS_COUNT, values);
+        getWebValues(webValues);
+        dmx_exec_t *exec = decodeDMX(webValues);
+        executeDMX(exec, shmValues);
 
         // Suspend before next update
         sleep(REFRESH_TI);
+        break;
     }
     
     // Terminate
-    exitDMX(values);
+    exitDMX(webValues);
 
     return EXIT_SUCCESS;
 }
 
-int initDMX() {
+int initDMX(uint8_t **shmValues) {
 
     // Open DMX interface
-    int success = dmxOpen();
+    int success = dmxOpen(shmValues);
     if (success < 0) return success;
 
     // Return valid status
     return 0;
 }
 
-void setDMXColor(unsigned int fromCh, int count, uint8_t values[]) {
-    
-    // Set the channel colors
-    for (int ch = fromCh + CHAN_INDEX; ch < count; ch++) {
-        dmxSetValue(ch, values[ch]);
-    }
-}
-
-void exitDMX(uint8_t *values) {
+void exitDMX(uint8_t *webValues) {
 
     // Blackout
-    memset(values, 0, CHANNELS_COUNT);
-    free(values);
+    memset(webValues, 0, CH_COUNT);
+    free(webValues);
 
     // Close the DMX connection
     dmxClose();

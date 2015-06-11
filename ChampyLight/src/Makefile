@@ -3,7 +3,7 @@ CFLAGS  = -Wall -Werror -pedantic -std=c99 -D_BSD_SOURCE #-D_POSIX_SOURCE
 LIB     = -lcurl
 
 TARGET  = champylight
-OBJECTS = champylight.o dmx.o utils.o curlClient.o
+OBJECTS = champylight.o dmx.o utils.o curlClient.o dmxOperations.o
 
 .PHONY: all clean
 

@@ -5,6 +5,7 @@
 // ==========================================================================
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -23,8 +24,9 @@ uint8_t  *chanData;       // 512 byte array of channel data
 uint8_t  *shm;            // shared memory segment containing data & ctrl regs
 int      shmid = -1;      // handel to shared memory segment
 
-int dmxOpen() {
+int dmxOpen(uint8_t **shmValues) {
 
+#ifndef DEBUG
     // Get the shared memory created by the deamon
     shmid = shmget(0x56444D58, sizeof(uint8_t) * SHM_SIZE, 0666);
 
@@ -33,33 +35,51 @@ int dmxOpen() {
         return errno;
     }
 
-    // Set up control and data registers
     shm = (uint8_t*) shmat (shmid, NULL, 0);
 
-    maxChanAddr  = (uint16_t*) shm;
-    exitAddr     = (uint8_t*) shm + 2;
-    chanData     = (uint8_t*)  exitAddr + 1;
-    *maxChanAddr = CHANNELS_COUNT;
+#else  // DEBUG MODE: simulating shared memory segment
+    
+    shm = (uint8_t*) calloc(SHM_SIZE, sizeof(uint8_t));
 
-    printf("\nmaxChanAddr %p => %d", maxChanAddr, *maxChanAddr);
-    printf("\nexitAddr %p => %d", exitAddr, *exitAddr);
-    printf("\nchanData %p => %d", chanData, *chanData);
-
-#ifdef VERBOSE
-    printSHM(CHANNELS_COUNT, shm);
 #endif
 
+    // Warning: if you modify the size of these parameters, set accordingly
+    // the #defines SHM_* for them.
+    maxChanAddr  = (uint16_t*) shm + SHM_NO_CH_I;
+    exitAddr     = (uint8_t*)  shm + SHM_EXIT_I;
+    chanData     = (uint8_t*)  shm + SHM_CHAN_I;
+    
+    *shmValues   = chanData;
+    *maxChanAddr = CH_COUNT;
+    
+    #ifdef VERBOSE
+    printSHMState();
+    #endif
+    
     return 0;
+
 }
 
 void dmxClose() {
     if (shmid != -1) {
         shmdt(shm);
     }
+
+#ifdef DEBUG
+    free(shm);
+#endif
 }
 
 void dmxSetValue(uint8_t channel, uint8_t data) {
     chanData[channel] = data;
+}
+
+void dmxSetValues(unsigned int fromCh, int count, uint8_t values[]) {
+    
+    // Set the channel colors
+    for (int ch = fromCh; ch < count; ch++) {
+        chanData[ch] = values[ch];
+    }
 }
 
 uint8_t dmxGetValue(uint8_t channel) {
@@ -68,9 +88,16 @@ uint8_t dmxGetValue(uint8_t channel) {
 
 bool isRunning() {
     
-    printf("GOT HERE and %d\n", 4);
-    //printf("GOT HERE and %c\n", *exitAddr);
+    #ifdef VERBOSE
+    printf("isRunning = 1\n");
+    #endif
     return 1;
 
     return *exitAddr == 0;
 }
+
+#ifdef VERBOSE
+void printSHMState() {
+    printSHM(shm);
+}
+#endif

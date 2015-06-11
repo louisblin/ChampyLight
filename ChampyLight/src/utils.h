@@ -1,6 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-void printSHM(int count, uint8_t values[]);
+void printSHM(uint8_t values[]);
+uint8_t* arrcp(uint8_t const *src, size_t length);
 
 #endif

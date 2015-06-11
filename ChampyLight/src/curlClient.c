@@ -5,8 +5,6 @@
 #include "constants.h"
 #include "curlClient.h"
 
-//#define BEBUG_TCP
-
 #ifdef BEBUG_TCP
 int main(void) {
     getWebValues(NULL);
@@ -16,12 +14,14 @@ int main(void) {
 
 void getWebValues(uint8_t *values) {
     
-    CURL *curl;
-    CURLcode res;
-
-    FILE *stream ;
-    if((stream = freopen(TCP_OUT, "w", stdout)) == NULL)
-        exit(-1);
+    CURL *curl = NULL;
+    CURLcode res = -1;
+    FILE *stream = NULL;
+    
+    if((stream = freopen(TCP_OUT, "w", stdout)) == NULL) {
+        fprintf(stderr, "Couldn't redirect stdout...\n");
+        exit(EXIT_FAILURE);
+    }
     
     curl = curl_easy_init();
     if(curl) {
@@ -43,10 +43,11 @@ void getWebValues(uint8_t *values) {
     }
     
     // Redirect stdout to console
+    //printf("Address of stream = %p\n", stream);
     stream = freopen("/dev/tty", "a", stdout);
-    
+
     #ifdef VERBOSE
-    printf("\nStream captured from the web");
+    printf("\nStream captured from the %s:\n", REMOTE_ADDR);
     #endif
 
     parseAndStoreFile(values);
@@ -54,23 +55,38 @@ void getWebValues(uint8_t *values) {
 
 void parseAndStoreFile(uint8_t *values) {
 
-    FILE *fp;
+    FILE *fp = NULL;
     if ((fp = fopen(TCP_OUT, "r")) == NULL) {
-        fprintf(stderr, "parseAndStoreFile: error opening file");
+        fprintf(stderr, "parseAndStoreFile: error opening file\n");
         exit(EXIT_FAILURE);
     }
 
     char buffer[5];
     int count = 0;
     while (fgets(buffer, sizeof(buffer), fp) != NULL) {
+            
+        int intNb = atoi(buffer);
+
         #ifdef VERBOSE
-        printf("-%d-", atoi(buffer));
+        printf("-%d-", intNb);
         #endif
 
-        values[count] = (uint8_t) atoi(buffer);
+        // Memory overflow check
+        if (count >= WEB_SIZE) {
+            fprintf(stderr, "parseAndStoreFile: overflow\n");
+            break;
+        }
+        
+        // Parsed number range
+        if (intNb < 0 || intNb > DEPTH) {
+            fprintf(stderr, "parseAndStoreFile: Number format of %d\n", intNb);
+            continue;
+        }
+
+        values[count++] = (uint8_t) atoi(buffer);
     }
     #ifdef VERBOSE
-    printf("\nTOTAL READ : %d\n", count + 1);
+    printf("\nTOTAL READ : %d\n", count);
     #endif
 
     // TODO: Log of errors with further error handling in file rw... 
