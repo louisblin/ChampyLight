@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="ChampyLight service, DMX controller on the web.">
+    <meta name="author" content="Louis Blin">
+
+    <title>ChampyLight :: Patch</title>
+    <link href="img/favicon.ico" rel="shortcut icon">
+
+	<!-- Bootstrap Core CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <!-- Bootstrap-slider -->
+    <link href="bootstrap-slider/css/bootstrap-slider.css" rel="stylesheet">
+    <script type='text/javascript' src="bootstrap-slider/bower_components/modernizr/modernizr.js"></script>
+
+	<!-- Custom CSS -->
+	<link href="css/champylight.css" rel="stylesheet">
+
+	<!-- Custom Fonts -->
+	<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="row" id="header">
+            <h1 class="col-xs-12" id="header_title">ChampyLight Controller</h1>
+        </div>
+
+        <!-- List of existing patched channels -->
+        <div class="row">
+            
+            <div class="channel col-lg-2 col-sm-4 col-xs-6">
+                <div class="channel_content row">
+                    <div class="patch_side_left col-xs-4">
+                        <div class="channel_no col-xs-12">
+                            <i class="fa fa-sliders">  1</i>
+                        </div>
+
+                        <div class="delete col-xs-12">
+                            <button type="button" class="btn btn-primary" id="delete_1" aria-label="Delete patch">
+                                  <span class="glyphicon glyphicon-trash" aria-hidden="true">.</span>
+                            </button>
+                        </div>  
+                        
+                    </div>
+                    
+                    <div class="patch_side_right col-xs-8">
+                        <div class="col-xs-12">
+                            <i class="fa fa-lightbulb-o">  1</i>
+                        </div>
+                        <div class="col-xs-12">
+                            <i class="fa fa-lightbulb-o">  2</i>
+                        </div>
+                        <div class="col-xs-12">
+                            <i class="fa fa-spinner">  3-7</i>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Adding a new patch :: button -->
+            <div class="channel col-lg-2 col-sm-4 col-xs-6">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary btn-lg" id="new_patch_btn" 
+                                            data-toggle="modal" data-target="#newPatchModal">
+                      New patch
+                </button>
+            </div>
+
+            <!-- Adding a new patch :: modal view -->
+            <!-- Modal -->
+            <div class="modal fade" id="newPatchModal" tabindex="-1" role="dialog" aria-labelledby="adding_a_new_patch">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        
+                        <form action="add_patch.php" method="POST">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">New patch</h4>
+                            </div>
+                            
+                            <div class="modal-body">
+                                    
+                                <!-- Selecting the channel -->
+                                <div class="row channel_div">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1">
+                                            <i class="fa fa-sliders"></i>
+                                        </span>
+                                        <input type="text" name="channel_selected" class="form-control" 
+                                                    placeholder="Channel number" aria-describedby="basic-addon1">
+                                    </div>
+                                </div>
+                            
+                                <!-- Selecting the inputs -->
+                                <div class="row input">
+                                    <div class="col-xs-12">
+                                        <table class="table" id="dmx_inputs">
+                                            <tr>
+                                                <td>
+                                                    <input type="text" class="dmx_input" name="input_1" placeholder="DMX (starting) address">
+                                                </td>
+                                                <td>
+                                                    <div class="col-xs-6 spot_type btn-group" data-toggle="buttons">
+                                                        <label class="btn btn-primary active">
+                                                            <input type="radio" name="light_type" id="bulb" checked>
+                                                            <i class="fa fa-lightbulb-o">  PAR</i>
+                                                        </label>
+                                                        <label class="btn btn-primary">
+                                                          <input type="radio" name="light_type" id="led">
+                                                          <i class="fa fa-spinner">  LED</i>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-default add_input_btn">Add</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                            
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="row" id="footer">
+            <div class="col-xs-12 btn-group btn-group-lg" role="group">
+                <button type="button" id="control_btn" class="col-xs-6 btn btn-default">Control</button>
+                <button type="button" id="patch_btn" class="disabled col-xs-6 btn btn-default">Patch</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts for patch -->
+    <script type='text/javascript' src="js/bootstrap.min.js"></script>
+    <script type='text/javascript' src="js/patch.js"></script>
+    
+</body>
+</html>

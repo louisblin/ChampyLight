@@ -5,13 +5,9 @@
 *.pdf
 *.txt
 
-#ignore junk files from latex output
-*.out
-*.log
-*.aux
-
 #ignore junk files from compiling C code
 *.o
+Champylight/src/champylight
 
 #ignore junk files from compiling C libs
 *.a
@@ -21,6 +17,4 @@
 
 #ignore other junk files
 *.backup
-*.kate-swp
 *.swp
-*.ps
