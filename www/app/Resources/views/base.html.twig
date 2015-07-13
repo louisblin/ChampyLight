@@ -1,4 +1,4 @@
-<!DOCTYPE php>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -43,17 +43,13 @@
 
         {% block constants %}
 
-            {% set INTENSITY_INDEX = 0 %}
-            {% set RED_INDEX = 1 %}
-            {% set GREEN_INDEX = 2 %}
-            {% set BLUE_INDEX = 3 %}
-            {% set WHITE_INDEX = 4 %}
+        {% set RED_INDEX = 0 %}
+        {% set GREEN_INDEX = 1 %}
+        {% set BLUE_INDEX = 2 %}
+        {% set WHITE_INDEX = 3 %}
 
-            {% set CHUNCK_SIZE = 5 %}
+        {% set TYPE_RGB = 1 %}
 
-            {% set TYPE_BW = DEL %}
-            {% set TYPE_RGB = LED %}
-        
         {% endblock %}
 
         {% block body %}{% endblock %}

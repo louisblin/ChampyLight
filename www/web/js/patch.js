@@ -43,7 +43,7 @@ function deletePatch(delEvt) {
     var cur_chan = getChannelForEvt(delEvt); 
 
     if (confirm("Do you really want to delete patch " + cur_chan + "?")) {
-        window.location.href = "delete_patch.php?patch_no=" + cur_chan;
+        window.location.href = "delete_patch/" + cur_chan;
     }
 }
 
@@ -82,6 +82,6 @@ $('.add_input_btn')
 document.getElementById("control_btn").addEventListener("click", function() {
   
     // Redirecting to Patch
-    window.location.href = "index.php";
+    window.location.href = "control";
 
 });

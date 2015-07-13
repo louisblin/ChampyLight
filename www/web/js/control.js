@@ -183,6 +183,6 @@ document.getElementById("patch_btn").addEventListener("click", function() {
     }
 
     // Redirecting to Patch
-    window.location.href = "patch.php";
+    window.location.href = "patch";
 
 });

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} ChampyLight :: Control {% endblock %}
+{% block title %}ChampyLight :: Control{% endblock %}
 
 {% block body %}
 <div class="container">
@@ -10,7 +10,7 @@
         <h1 class="col-xs-12" id="header_title">ChampyLight Controller</h1>
     </div>
 
-    <form action="submit_values.php" method="POST">
+    <form action="submit_values" method="POST">
         <!-- Command block to fire transiitons and set timer -->
         <div class="row" id="command">
                 
@@ -37,33 +37,30 @@
         <!-- List of channels that are in the patch -->
         <div class="row">
       
-        {% for key, channel in channels %}
+        {% for channel in channels %}
 
-        {# Computing values for coming channel #}
-        {% set channel_no = channel.channel %}
+            {# Computing values for coming channel #}
+            {% set channel_no = channel.channel %}
 
-        {# Standards for BW #}
-        {% set data_slider_enabled = "false" %}
-        {% set data_slider_red_value = 255 %}
-        {% set data_slider_green_value = 255 %}
-        {% set data_slider_blue_value = 255 %}
-        {% set data_slider_white_value = 255 %}
-        {% set data_slider_intensity_value = channel.intensity %}
+            {# Standards for BW #}
+            {% set data_slider_enabled = "false" %}
+            {% set data_slider_red_value = 255 %}
+            {% set data_slider_green_value = 255 %}
+            {% set data_slider_blue_value = 255 %}
+            {% set data_slider_white_value = 255 %}
+            {% set data_slider_intensity_value = channel.intensity %}
 
-        {# If is RGB, update #}
-        {% if channel.type == TYPE_RGB %}
-            {% set data_slider_enabled = "true" %}
+            {# If is RGB, update #}
+            {% if channel.type == 1 %}
+                {% set data_slider_enabled = "true" %}
 
-            {% set data_slider_red_value = channels..intensity %}
-            {% set data_slider_green_value = channels.{{ key + GREEN_INDEX }}.intensity %}
-            {% set data_slider_blue_value = channels.{{ key + BLUE_INDEX }}.intensity %}
-            {% set data_slider_white_value = channels.{{ key + WHITE_INDEX }}.intensity %}
-            {% set data_slider_intensity_value = channels.{{ key + INTENSITY_INDEX }}.intensity %}
+                {% set data_slider_red_value = channel.spotlights.dmxs.RED_INDEX.intensity %}
+                {% set data_slider_green_value = channel.spotlights.dmxs.GREEN_INDEX.intensity %}
+                {% set data_slider_blue_value = channel.spotlights.dmxs.BLUE_INDEX.intensity %}
+                {% set data_slider_white_value = channel.spotlights.dmxs.WHITE_INDEX.intensity %}
 
-        {% endif %}
+            {% endif %}
 
-        {% endfor %}
-            
             <div class="channel channel_{{ channel_no }} col-lg-4 col-sm-6 col-xs-12">
                 <div class="channel_content row">
                     <div class="channel_side channel_side_left col-xs-2">
@@ -92,7 +89,7 @@
                                data-slider-value="{{ data_slider_red_value }}" 
                                data-slider-id="RC_{{ channel_no }}" 
                                id="R_{{ channel_no }}" 
-                               data-slider-enabled="{{ data_enabled }}"
+                               data-slider-enabled="{{ data_slider_enabled }}"
                                data-slider-handle="round" />
                         </p>
                         <p class="slider_green">
@@ -105,7 +102,7 @@
                                data-slider-value="{{ data_slider_green_value }}" 
                                data-slider-id="GC_{{ channel_no }}" 
                                id="G_{{ channel_no }}" 
-                               data-slider-enabled="{{ data_enabled }}"
+                               data-slider-enabled="{{ data_slider_enabled }}"
                                data-slider-handle="round" />
                         </p>
                         <p class="slider_blue">
@@ -118,7 +115,7 @@
                                data-slider-value="{{ data_slider_green_value }}" 
                                data-slider-id="BC_{{ channel_no }}" 
                                id="B_{{ channel_no }}" 
-                               data-slider-enabled="{{ data_enabled }}"
+                               data-slider-enabled="{{ data_slider_enabled }}"
                                data-slider-handle="round" />
                         </p>
                         <p class="slider_white">
@@ -131,7 +128,7 @@
                                data-slider-value="{{ data_slider_white_value }}" 
                                data-slider-id="WC_{{ channel_no }}" 
                                id="W_{{ channel_no }}" 
-                               data-slider-enabled="{{ data_enabled }}"
+                               data-slider-enabled="{{ data_slider_enabled }}"
                                data-slider-handle="round" />
                         </p>
                     </div>
@@ -171,7 +168,7 @@
 
 <!-- Scripts for sliders-->
 <script type='text/javascript' src="{{ asset('bootstrap-slider/js/bootstrap-slider.js') }}"></script>
-<script type='text/javascript' src="{{ asset('js/control.js') }}></script>
+<script type='text/javascript' src="{{ asset('js/control.js') }}"></script>
 
 {% endblock %}
 

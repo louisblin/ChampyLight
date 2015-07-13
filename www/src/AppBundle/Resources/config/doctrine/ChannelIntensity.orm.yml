@@ -1,0 +1,14 @@
+AppBundle\Entity\ChannelIntensity:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Entity\ChannelIntensityRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        intensity:
+            type: integer
+    lifecycleCallbacks: {  }
