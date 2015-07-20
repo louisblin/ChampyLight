@@ -54,18 +54,12 @@ class DefaultController extends Controller
         $raw_channels = DataQueries::getAllChannels();
         $channels = array();
 
-        print_r($raw_channels);
-
         // For all rows
         $i = 0;
         while ($i < count($raw_channels)) {
 
             $raw_channel = $raw_channels[$i];
-
             $current_channel = $raw_channel['channel'];
-            
-            echo "curr channel is " . $current_channel;
-
             $is_rgb_patch = true;
 
             $new_patch = new Patch(
@@ -95,7 +89,7 @@ class DefaultController extends Controller
 
                 // If RGB
                 if (strcmp($raw_channel['type'], "LED") == 0) {
-
+                    
                     // Process the 4 next raws
                     for ($ii = 0; $ii < 4; $ii++) {
 
@@ -112,6 +106,9 @@ class DefaultController extends Controller
                 }
                 
                 $new_patch->appendSpotlight($new_spotlight);
+                
+                //echo "<br><br>Added spotlight:";
+                //print_r($new_spotlight->dmxs);
 
                 // Updating values
                 $i++;
@@ -128,9 +125,9 @@ class DefaultController extends Controller
             $channels[] = $new_patch;
         }
 
-        foreach ($channels as $patch) {
-            echo $patch->dump();
-        }
+        //foreach ($channels as $patch) {
+        //    echo $patch->dump();
+        //}
     
         return $channels;
     }

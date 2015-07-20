@@ -138,6 +138,12 @@ body {
 
 /* Sliders fields */
 
+.sliders p {
+    margin: 10px 0 0 0;
+    position: relative;
+    bottom: 5px; 
+}
+
 .slider.slider-horizontal {
     width: 90%;
 }
@@ -207,6 +213,7 @@ form .patch_side_left {
     margin-bottom: 20px;
 }
 
+.channel_no,
 .channel_div {
     margin-bottom: 10px;
 }
@@ -224,4 +231,3 @@ td input,
 .dmx_input {
     width: 100%;
 }
-

@@ -59,6 +59,6 @@ class Patch {
             $out .= $spot->dump();
         }
 
-        return $out . "]";
+        return $out . "<br>]";
     }
 }

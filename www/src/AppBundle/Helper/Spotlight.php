@@ -36,7 +36,7 @@ class Spotlight {
     }
     
     public function dump() {
-        $out = "<br>Start Add[" . $this->address .
+        $out = "<br> --- Start Add[" . $this->address .
                "] - Type[" . $this->type . 
                "] - Dmxs[";
 
@@ -44,6 +44,6 @@ class Spotlight {
             $out .= $dmx->dump();
         } 
                
-        return $out . "]";
+        return $out . "<br> --- ]";
     }
 }

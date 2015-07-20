@@ -118,6 +118,9 @@ $("#slider_timer").on("slide", function(slideEvt) {
     else {
         $("#slider_timer_value").text(slideEvt.value);
     }
+
+    // Update value attribute of input
+    $("#slider_timer").value(slideEvt.value);
 });
 
 

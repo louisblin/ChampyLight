@@ -16,6 +16,7 @@ $dbName = 'champylight';
 // Table names
 $GLOBALS['patch'] = 'patch';
 $GLOBALS['channel_intensity'] = 'channel_intensity';
+$GLOBALS['meta'] = 'meta';
 
 $GLOBALS['db'] = NULL;
 

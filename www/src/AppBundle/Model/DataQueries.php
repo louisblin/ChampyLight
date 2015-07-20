@@ -18,6 +18,8 @@ use AppBundle\Model\ErrorsHandling;
  * Functions available:
  *
  * Getters for channel, dmx and overall dmx intensity
+ * - getTransitionType();
+ * - getTransitionFadeTI();
  * - getIntensityForDMX($dmx);
  * - getIntensityForChannel($channel);
  * - getOverallIntensityForDMX($dmx);
@@ -25,6 +27,8 @@ use AppBundle\Model\ErrorsHandling;
  * - getAllChannels();
  *
  * Setters for channel and dmx intensity
+ * - setTransitionType($trans_id);
+ * - setTransitionFadeTI($fade_ti);
  * - setIntensityForDMX($dmx, $newIntensity);
  * - setIntensityForChannel($channel, $newIntensity);
  *
@@ -40,9 +44,69 @@ use AppBundle\Model\ErrorsHandling;
 $event_name = "default";
 
 class DataQueries {
-
+    
     // GETTERS
 
+    public static function getTransitionType() {
+
+        require_once 'DbConnection.php';
+        
+        global $db, $dbName, $meta;
+        
+        $sql = "SELECT transition_type_id"
+             . " FROM " . $dbName . "." . $meta;
+
+        $q = $db->prepare($sql);
+        
+        try {
+            $q->execute();
+        } catch (PDOException $e) {
+
+            ErrorsHandling::reportPDOError($e);
+            return -1;
+        }
+
+        $ans = $q->fetch();
+        $q->closeCursor();
+
+        ErrorsHandling::reportPDOError(NULL);
+        if ($q->rowCount() == 0) {
+            return -1;
+        }
+
+        return (int) $ans['transition_type_id'];
+    }
+    
+    public static function getTransitionFadeTI() {
+    
+        require_once 'DbConnection.php';
+        
+        global $db, $dbName, $meta;
+        
+        $sql = "SELECT transition_fade_ti"
+             . " FROM " . $dbName . "." . $meta;
+
+        $q = $db->prepare($sql);
+        
+        try {
+            $q->execute();
+        } catch (PDOException $e) {
+
+            ErrorsHandling::reportPDOError($e);
+            return -1;
+        }
+
+        $ans = $q->fetch();
+        $q->closeCursor();
+
+        ErrorsHandling::reportPDOError(NULL);
+        if ($q->rowCount() == 0) {
+            return -1;
+        }
+
+        return (int) $ans['transition_fade_ti'];
+    }
+    
     public static function getIntensityForDMX($dmx) {
 
         require_once 'DbConnection.php';
@@ -82,7 +146,7 @@ class DataQueries {
         global $db, $dbName, $channel_intensity;
         
         $sql = "SELECT intensity"
-             . " FROM channel_intensity"
+             . " FROM " . $dbName . "." . $channel_intensity
              . " WHERE channel = :channel";
 
         $q = $db->prepare($sql);
@@ -134,11 +198,13 @@ class DataQueries {
         $q->closeCursor();
 
         ErrorsHandling::reportPDOError(NULL);
+        
+        // Returning default value
         if ($q->rowCount() == 0) {
-            return -1;
+            return 255;
         }
 
-        return (int) $ans['int'];
+        return (int) $ans['intensity'];
     }
 
     public static function getChannelForDMX($dmx) {
@@ -204,6 +270,57 @@ class DataQueries {
 
     // SETTERS
 
+
+    public static function setTransitionType($trans_id) {
+
+        require_once 'DbConnection.php';
+        
+        global $db, $dbName, $meta; 
+
+        $sql = "UPDATE " . $dbName . "." . $meta
+            . " SET transition_type_id = :trans_id"
+            . " WHERE 1";
+        
+        $q = $db->prepare($sql);
+        $q->bindParam(':trans_id', $trans_id, \PDO::PARAM_INT);
+
+        try {
+            $q->execute();
+        } catch (PDOException $e) {
+            
+            ErrorsHandling::reportPDOError($e);        
+            return false;
+        }
+        
+        ErrorsHandling::reportPDOError(NULL);
+        return true;
+    }
+
+    public static function setTransitionFadeTI($fade_ti) {
+        
+        require_once 'DbConnection.php';
+        
+        global $db, $dbName, $meta; 
+
+        $sql = "UPDATE " . $dbName . "." . $meta
+            . " SET transition_fade_ti = :fade_ti"
+            . " WHERE 1";
+        
+        $q = $db->prepare($sql);
+        $q->bindParam(':fade_ti', $fade_ti, \PDO::PARAM_INT);
+
+        try {
+            $q->execute();
+        } catch (PDOException $e) {
+            
+            ErrorsHandling::reportPDOError($e);        
+            return false;
+        }
+        
+        ErrorsHandling::reportPDOError(NULL);
+        return true;
+    }
+    
     public static function setIntensityForDMX($dmx, $newIntensity) {
 
         require_once 'DbConnection.php';

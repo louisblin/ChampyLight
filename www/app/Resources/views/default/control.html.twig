@@ -21,10 +21,17 @@
                   </button>
             </div>
             
+            <!-- Transition type -->
+            <div class="col-sm-4 col-xs-12" id="fire_transition" style="display: none;">
+                <input type="hidden" name="transition_type" value="linear">
+            </div>
+            
             <!-- Timer -->
             <div class="col-sm-8 col-xs-12" id="timer">
                 <input id="slider_timer" 
-                       type="text" 
+                       type="text"
+                       name="slider_timer"
+                       value="5"
                        data-slider-min="1" 
                        data-slider-max="1800" 
                        data-slider-step="1" />
@@ -44,23 +51,33 @@
 
             {# Standards for BW #}
             {% set data_slider_enabled = "false" %}
-            {% set data_slider_red_value = 255 %}
-            {% set data_slider_green_value = 255 %}
-            {% set data_slider_blue_value = 255 %}
-            {% set data_slider_white_value = 255 %}
             {% set data_slider_intensity_value = channel.intensity %}
-
+            
+            {% set data_slider_red_addr     = "" %}
+            {% set data_slider_green_addr   = "" %}
+            {% set data_slider_blue_addr    = "" %}
+            {% set data_slider_white_addr   = "" %}
+            {% set data_slider_red_value    = 255 %}
+            {% set data_slider_green_value  = 255 %}
+            {% set data_slider_blue_value   = 255 %}
+            {% set data_slider_white_value  = 255 %}
+            
             {# If is RGB, update #}
             {% if channel.type == 1 %}
                 {% set data_slider_enabled = "true" %}
 
-                {% set data_slider_red_value = channel.spotlights.dmxs.RED_INDEX.intensity %}
-                {% set data_slider_green_value = channel.spotlights.dmxs.GREEN_INDEX.intensity %}
-                {% set data_slider_blue_value = channel.spotlights.dmxs.BLUE_INDEX.intensity %}
-                {% set data_slider_white_value = channel.spotlights.dmxs.WHITE_INDEX.intensity %}
+                {% set data_slider_red_addr     = channel.spotlights[0].dmxs[0].address %}
+                {% set data_slider_green_addr   = channel.spotlights[0].dmxs[1].address %}
+                {% set data_slider_blue_addr    = channel.spotlights[0].dmxs[2].address %}
+                {% set data_slider_white_addr   = channel.spotlights[0].dmxs[3].address %}
+                
+                {% set data_slider_red_value    = channel.spotlights[0].dmxs[0].intensity %}
+                {% set data_slider_green_value  = channel.spotlights[0].dmxs[1].intensity %}
+                {% set data_slider_blue_value   = channel.spotlights[0].dmxs[2].intensity %}
+                {% set data_slider_white_value  = channel.spotlights[0].dmxs[3].intensity %}
 
             {% endif %}
-
+            
             <div class="channel channel_{{ channel_no }} col-lg-4 col-sm-6 col-xs-12">
                 <div class="channel_content row">
                     <div class="channel_side channel_side_left col-xs-2">
@@ -82,7 +99,8 @@
                         <p class="slider_red">
                         <input type="text" 
                                class="span2 channel_{{ channel_no }}" 
-                               value="" 
+                               name="dmxs[{{ data_slider_red_addr }}]"
+                               value="{{ data_slider_red_value }}" 
                                data-slider-min="0" 
                                data-slider-max="255" 
                                data-slider-step="1" 
@@ -95,7 +113,8 @@
                         <p class="slider_green">
                         <input type="text" 
                                class="span2 channel_{{ channel_no }}" 
-                               value="" 
+                               name="dmxs[{{ data_slider_green_addr }}]"
+                               value="{{ data_slider_green_value }}" 
                                data-slider-min="0" 
                                data-slider-max="255" 
                                data-slider-step="1" 
@@ -108,11 +127,12 @@
                         <p class="slider_blue">
                         <input type="text" 
                                class="span2 channel_{{ channel_no }}" 
-                               value="" 
+                               name="dmxs[{{ data_slider_blue_addr }}]"
+                               value="{{ data_slider_blue_value }}" 
                                data-slider-min="0" 
                                data-slider-max="255" 
                                data-slider-step="1" 
-                               data-slider-value="{{ data_slider_green_value }}" 
+                               data-slider-value="{{ data_slider_blue_value }}" 
                                data-slider-id="BC_{{ channel_no }}" 
                                id="B_{{ channel_no }}" 
                                data-slider-enabled="{{ data_slider_enabled }}"
@@ -121,7 +141,8 @@
                         <p class="slider_white">
                         <input type="text" 
                                class="span2 channel_{{ channel_no }}" 
-                               value="" 
+                               name="dmxs[{{ data_slider_white_addr }}]"
+                               value="{{ data_slider_white_value }}" 
                                data-slider-min="0" 
                                data-slider-max="255" 
                                data-slider-step="1" 
@@ -138,6 +159,8 @@
                             <input id="int_{{ channel_no }}" 
                                    class="channel_{{ channel_no }}" 
                                    type="text" 
+                                   name="channel_intensity[{{ channel_no }}]"
+                                   value="{{ data_slider_intensity_value }}"
                                    data-slider-min="0" 
                                    data-slider-max="255" 
                                    data-slider-step="1" 
