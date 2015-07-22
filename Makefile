@@ -1,6 +1,6 @@
 CdC=gcc
 
-TARGETS=dmx champylight
+TARGETS=dmx ChampyLight
 
 all: $(TARGETS)
 	for i in $(TARGETS); \
