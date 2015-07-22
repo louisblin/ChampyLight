@@ -1,12 +1,3 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}ChampyLight :: Render{% endblock %}
-
-{% block stylesheets %}{% endblock %}
-{% block constants %}{% endblock %}
-
-{% block body %}
-    {% for intensity in intensities %}
-    {{ intensity }}<br>
-    {% endfor %}
-{% endblock %}
+{% for intensity in intensities %}
+{{ intensity }}\n
+{% endfor %}
