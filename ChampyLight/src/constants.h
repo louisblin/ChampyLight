@@ -19,7 +19,7 @@
 
 // Curl
 #define TIMEOUT         2
-#define REMOTE_ADDR     "www.doc.ic.ac.uk/~lb3214/champyvote/renderCSV.php"
+#define REMOTE_ADDR     "www.doc.ic.ac.uk/~lb3214/champylightTestFile.php"
 #define TCP_OUT         "curl_output.txt"
 
 // Dmx operations

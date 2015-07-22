@@ -61,7 +61,7 @@ void parseAndStoreFile(uint8_t *values) {
         exit(EXIT_FAILURE);
     }
 
-    char buffer[5];
+    char buffer[4];
     int count = 0;
     while (fgets(buffer, sizeof(buffer), fp) != NULL) {
             

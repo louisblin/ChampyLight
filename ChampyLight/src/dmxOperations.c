@@ -10,6 +10,12 @@
 #include "constants.h"
 #include "dmxOperations.h"
 
+// Static prototypes
+inline static double lin(const double t);
+inline static double cres(const double t);
+inline static double decr(const double t);
+
+
 dmx_exec_t* decodeDMX(uint8_t values[]) {
 
     dmx_exec_t *out = calloc(1, sizeof(dmx_exec_t));

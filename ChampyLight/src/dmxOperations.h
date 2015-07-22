@@ -45,9 +45,6 @@ void executeRegular(dmx_exec_t *in,
 void executeStrobe(dmx_exec_t *in, uint8_t startValues[]);
 
 // Helpers
-inline static double lin(const double t);
-inline static double cres(const double t);
-inline static double decr(const double t);
 void startTime(struct timeval *t0);
 int updateTime(struct timeval *t0, struct timeval *t1, 
                                          unsigned int sleepTime);
