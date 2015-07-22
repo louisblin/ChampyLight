@@ -53,7 +53,7 @@ int dmxOpen(uint8_t **shmValues) {
     *maxChanAddr = CH_COUNT;
     
     #ifdef VERBOSE
-    printSHMState();
+    printSHM(shm);
     #endif
     
     return 0;
@@ -88,16 +88,10 @@ uint8_t dmxGetValue(uint8_t channel) {
 
 bool isRunning() {
     
-    #ifdef VERBOSE
-    printf("isRunning = 1\n");
-    #endif
-    return 1;
-
     return *exitAddr == 0;
 }
 
-#ifdef VERBOSE
 void printSHMState() {
     printSHM(shm);
 }
-#endif
+

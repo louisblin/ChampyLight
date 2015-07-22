@@ -32,19 +32,20 @@
 #include <sys/shm.h>
 #include <string.h>
 #include <errno.h>
+#include <stdint.h>
 
 #define VERBOSE
 
 // dmx data and control registers
 typedef unsigned char ubyte;
 
-int   * maxChanAddr;      // control register for # of channels to update
-ubyte * exitAddr;         // control register to exit deamon
-ubyte * chanData;         // 512 byte array of channel data
+uint16_t  * maxChanAddr; // control register for # of channels to update
+ubyte     * exitAddr;    // control register to exit deamon
+ubyte     * chanData;    // 512 byte array of channel data
 
 
-ubyte *shm;              // shared memory segment containing data & ctrl regs
-int shmid;               // handel to shared memory segment
+ubyte     *shm;          // shared memory segment containing data & ctrl regs
+int       shmid;         // handel to shared memory segment
 
 
 // constants and defs
@@ -53,7 +54,7 @@ int shmid;               // handel to shared memory segment
 #define VendorID 0x10cf  // K8062 USB vendor ID
 #define ProdID   0x8062  // K8062 USB product ID
 
-#define UpdateInt 100000 // update interval ( microseconds )
+#define UpdateInt 1000000 // update interval ( microseconds )
 #define DefMaxChans   16 // default number of maximum channels
 
 // internal structures
@@ -121,6 +122,9 @@ int main() {
     gettimeofday ( &next , NULL );
     
     
+    #ifdef VERBOSE
+    printf("%s: Init done. Entering loop cycle...\n", ProgName);
+    #endif    
     
     // loop until commanded to shutdown
     
@@ -128,14 +132,13 @@ int main() {
         
         
         // send DMX data
-        
+       
         success = sendDMX();
         
         if ( !success ) {
             printf  ( "%s: DMX send error\n" , ProgName );
             (*exitAddr)++;
         }
-        
         
         // wait for update interval
 
@@ -180,10 +183,11 @@ int sendDMX ()
 {
     ubyte data[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     int numChans = *maxChanAddr;
-    
+    printf("\n\nnumChans is %d", numChans); 
     
     #if 1
     
+    // |=== START PACKET
     // find out how many consecutive zeroes are in the data - the start
     // packet can indicate this to avoid sending a bunch of leading
     // zeroes
@@ -208,6 +212,14 @@ int sendDMX ()
     data[6] = chanData [ curChanIdx++ ];  // next chan data
     data[7] = chanData [ curChanIdx++ ];  // next chan data
     
+    #ifdef VERBOSE    
+    printf("\nWriting start packet... data[code.no.1..6] = ");
+    int i = 0;
+    while (i < 8) {
+       printf("-%d", data[i++]);
+    }
+    #endif
+
     int success = writeUSB ( data , 8 );
     
     if ( !success ) {
@@ -215,15 +227,17 @@ int sendDMX ()
         return ( 0 );
     }
     
+    // Exit if only all data is already in starting header
     if ( curChanIdx >= numChans ) return ( 1 );
+   
     
-    
-    
+    // |=== BULK PACKETS
     // after the first packet additional packets are sent that contain seven
     // channels each up to 512.
     
     while ( curChanIdx < ( numChans - 7 ) ) {
-        
+    //while ( curChanIdx < numChans ) {
+    
         data[0] = 2;                          // start packet header (2)
         data[1] = chanData [ curChanIdx++ ];  // next chan data
         data[2] = chanData [ curChanIdx++ ];  // next chan data
@@ -231,8 +245,47 @@ int sendDMX ()
         data[4] = chanData [ curChanIdx++ ];  // next chan data
         data[5] = chanData [ curChanIdx++ ];  // next chan data
         data[6] = chanData [ curChanIdx++ ];  // next chan data
+        data[7] = chanData [ curChanIdx++ ];  // next chan data ADDED
         
+    //}
+    
+        #ifdef VERBOSE    
+        printf("\nWriting bulk packet... data[code-%d..%d] = ", curChanIdx - 6, curChanIdx);
+        i = 0;
+        while (i < 8) {
+           printf("-%d", data[i++]);
+        }
+        #endif
+    
+        success = writeUSB ( data , 8 );
+        
+        if ( !success ) {
+            printf ( "%s: Error sending DMX bulk packet\n" , ProgName );
+            return ( 0 );
+        }
+    
     }
+    // If sent packets out of range, exit failure
+    //if ( curChanIdx >= numChans ) return ( 0 );
+    
+    // |=== END PACKET
+    data[0] = 3;                               // start packet header (3)
+    
+    int idx = 1;
+    while ( curChanIdx < numChans ) {
+    
+        data[++idx] = chanData[curChanIdx++];  // next chan data    
+    }
+    data[1] = --idx;                             // Number of remaining packets
+    
+    #ifdef VERBOSE    
+    printf("\nWriting end packet... data[code-no-%d..%d] = ", curChanIdx - idx + 1, curChanIdx);
+    i = 0;
+    while (i < 8) {
+       printf("-%d", data[i++]);
+    }
+    printf("\n");
+    #endif
     
     success = writeUSB ( data , 8 );
     
@@ -240,8 +293,6 @@ int sendDMX ()
         printf ( "%s: Error sending DMX bulk packet\n" , ProgName );
         return ( 0 );
     }
-    
-    if ( curChanIdx >= numChans ) return ( 0 );
     
     #else
     
@@ -451,10 +502,9 @@ int initSHM()
     
     memset ( shm , 0 , sizeof ( ubyte ) * 515 );
     
-    
     // set up command & data registers
     
-    maxChanAddr  = ( int * ) shm;
+    maxChanAddr  = ( uint16_t * ) shm;
     *maxChanAddr = DefMaxChans;
     
     exitAddr     = ( ubyte * ) maxChanAddr + 2;

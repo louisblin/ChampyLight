@@ -32,7 +32,7 @@
 
 // Utils
 #define VERBOSE
-#define DEBUG
+//#define DEBUG
 #define SLOT_TO_SHOW    20
 //#define BEBUG_TCP
 

@@ -71,9 +71,8 @@ void parseAndStoreFile(uint8_t *values) {
         printf("-%d-", intNb);
         #endif
 
-        // Memory overflow check
+        // All channels read
         if (count >= WEB_SIZE) {
-            fprintf(stderr, "parseAndStoreFile: overflow\n");
             break;
         }
         

@@ -4,7 +4,7 @@ LIBOJBS=dmx.o
 OBJS=$(LIBOBJS) $(DEAMONOBJS)
 DEAMONBIN=dmxd.bin
 LIB=libdmx.a
-CFLAGS+=
+CFLAGS+=-Wall
 LDFLAGS+=-lusb -lm
 INCLUDES+=-I./
 
@@ -15,7 +15,8 @@ all: $(LIB) $(DEAMONBIN) $(TESTBIN)
 	$(CC) $(CFLAGS) $(INCLUDES) -g -c $< -o $@ -Wno-deprecated-declarations
 
 dmxd.bin: $(DEAMONOBJS)
-	$(CC) -o $@ -Wl, $(DEAMONOBJS) $(LDFLAGS) -Wl, -rdynamic
+	$(CC) -o $@ $(DEAMONOBJS) $(LDFLAGS) -rdynamic	
+	#$(CC) -o $@ -Wl, $(DEAMONOBJS) $(LDFLAGS) -Wl, -rdynamic
 	mv dmxd.bin ../deamon
 
 
