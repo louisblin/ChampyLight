@@ -14,8 +14,6 @@ void    dmxSetValues      (unsigned int fromCh, int count, uint8_t values[]);
 uint8_t dmxGetValue       (uint8_t channel);
 bool    isRunning         ();
 
-#ifdef VERBOSE
 void    printSHMState     ();
-#endif
 
 #endif

@@ -102,7 +102,10 @@ void executeRegular(dmx_exec_t *in,
         }
         dmxSetValues(0, CH_COUNT, currValues);
 
+        #ifdef VERBOSE
         printf("\n\nTime elapsed is %dms... ", millis_elapsed);
+        #endif
+
         millis_elapsed += updateTime(&t0, &t1, (unsigned int) DMX_REFRESH_TI);
 
     } while (millis_elapsed < millis_fade_ti);

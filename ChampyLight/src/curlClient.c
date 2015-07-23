@@ -43,7 +43,6 @@ void getWebValues(uint8_t *values) {
     }
     
     // Redirect stdout to console
-    //printf("Address of stream = %p\n", stream);
     stream = freopen("/dev/tty", "a", stdout);
 
     #ifdef VERBOSE

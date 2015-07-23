@@ -34,7 +34,7 @@
 #include <errno.h>
 #include <stdint.h>
 
-#define VERBOSE
+#include "../../ChampyLight/src/constants.h"
 
 // dmx data and control registers
 typedef unsigned char ubyte;
@@ -54,7 +54,7 @@ int       shmid;         // handel to shared memory segment
 #define VendorID 0x10cf  // K8062 USB vendor ID
 #define ProdID   0x8062  // K8062 USB product ID
 
-#define UpdateInt 1000000 // update interval ( microseconds )
+#define UpdateInt 100000 // update interval ( microseconds )
 #define DefMaxChans   16 // default number of maximum channels
 
 // internal structures
@@ -91,9 +91,7 @@ int main() {
     struct timeval now,next,diff,delay;
     int success;
     
-    #ifdef VERBOSE
     printf("%s: Starting dmx deamon\n", ProgName);
-    #endif    
 
     // intialize USB device
     
@@ -121,10 +119,7 @@ int main() {
     
     gettimeofday ( &next , NULL );
     
-    
-    #ifdef VERBOSE
     printf("%s: Init done. Entering loop cycle...\n", ProgName);
-    #endif    
     
     // loop until commanded to shutdown
     
@@ -155,9 +150,7 @@ int main() {
         
     }
     
-    #ifdef VERBOSE    
     printf ( "%s: dmx deamon is shutting down\n" , ProgName );
-    #endif
     
     // on shutdown reset all DMX channels
     
@@ -183,8 +176,12 @@ int sendDMX ()
 {
     ubyte data[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
     int numChans = *maxChanAddr;
-    printf("\n\nnumChans is %d", numChans); 
     
+    #ifdef VERBOSE
+    printf("\n\nnumChans is %d", numChans); 
+    #endif
+    
+
     #if 1
     
     // |=== START PACKET
@@ -203,7 +200,7 @@ int sendDMX ()
     // data
     
     data[0] = 4;                          // start packet header (4)
-    data[1] = curChanIdx;                 // number of zeroes ( not sent )
+    data[1] = curChanIdx + 1;                 // number of zeroes ( not sent )
     
     data[2] = chanData [ curChanIdx++ ];  // first ( non-zero ) chan data
     data[3] = chanData [ curChanIdx++ ];  // next chan data
@@ -235,7 +232,7 @@ int sendDMX ()
     // after the first packet additional packets are sent that contain seven
     // channels each up to 512.
     
-    while ( curChanIdx < ( numChans - 7 ) ) {
+    while ( curChanIdx < ( numChans - 6 ) ) {
     //while ( curChanIdx < numChans ) {
     
         data[0] = 2;                          // start packet header (2)
@@ -346,9 +343,7 @@ int initUSB()
         
         for ( dev = bus->devices; dev; dev = dev -> next ) {
             
-            #ifdef VERBOSE
             printf ( "%s: Checking device [%s]\n" , ProgName , dev -> filename );
-            #endif
 
             descr = & dev->descriptor;
             
@@ -365,9 +360,7 @@ int initUSB()
     
     // open the device
     
-    #ifdef VERBOSE
-    printf ( "%s: Opening device [%s] ... \n" , ProgName , dev -> filename );
-    #endif
+    printf ( "%s: Opening device [%s] ... " , ProgName , dev -> filename );
 
     udev = usb_open ( dev );
     
@@ -376,9 +369,7 @@ int initUSB()
         return ( 0 );
     }
     else {
-        #ifdef VERBOSE
         printf ( "Ok\n" );
-        #endif
     }
     
     
@@ -463,9 +454,7 @@ void exitUSB()
 int initSHM()
 {
     
-    #ifdef VERBOSE
-    printf ( "%s: Creating shared memory segment ... \n" , ProgName );
-    #endif 
+    printf ( "%s: Creating shared memory segment ... " , ProgName );
     
     // create the shared memory segment
     
@@ -476,17 +465,13 @@ int initSHM()
         return ( 0 );
     }
     else {
-        #ifdef VERBOSE
-        printf ( "ok\n" );
-        #endif
+        printf ( "Ok\n" );
     }
     
     
     // attach to segment and initialize
     
-    #ifdef VERBOSE
-    printf ( "%s: Initializing segment [0x%x] ... \n" , ProgName , shmid );
-    #endif
+    printf ( "%s: Initializing segment [0x%x] ... " , ProgName , shmid );
 
     shm = ( ubyte * ) shmat ( shmid , NULL , 0 );
     
@@ -495,9 +480,7 @@ int initSHM()
         return ( 0 );
     }
     else {
-        #ifdef VERBOSE
-        printf ( "ok\n" );
-        #endif
+        printf ( "Ok\n" );
     }
     
     memset ( shm , 0 , sizeof ( ubyte ) * 515 );

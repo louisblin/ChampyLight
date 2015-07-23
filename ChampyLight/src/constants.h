@@ -2,7 +2,7 @@
 #define CONSTANTS_H
 
 // Common values between SHM and WEB
-#define CH_COUNT        512
+#define CH_COUNT        34
 #define DEPTH           255   // MAX value for a channel
 
 // Shared memory
@@ -28,14 +28,14 @@
 #define CRES_EXP        2.85f // Exp of crescendo coef function
 #define DECR_EXP        0.35f // Exp of decrescendo coef function
 #define DMX_REFRESH_TI  100   // TI between 2 DMX packets  (MILLIS)
-#define STROBE_LENGTH   3000  // Time length of the strobe effect (MILLIS)
+#define STROBE_LENGTH   300   // Time length of the strobe effect (MILLIS)
 
 // Utils
-#define VERBOSE
+//#define VERBOSE
 //#define DEBUG
-#define SLOT_TO_SHOW    20
 //#define BEBUG_TCP
 
+#define SLOT_TO_SHOW    512
 #define MEM_PER_LINE    4     // Number of consecutive mem slots per line 
 
 #endif
