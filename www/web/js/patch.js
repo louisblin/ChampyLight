@@ -24,6 +24,7 @@ function init_adding_modal() {
 window.onload = function() {
  
     init_adding_modal();
+    $('#field_count').attr('value', 1);
 };
 
 /********* Patch Del / Add  ***********/
@@ -74,7 +75,36 @@ $('.add_input_btn')
         tr.find('input[type=text]').val('');
     
         $(this).closest('tr').after(clone);
+        tr.find("button").hide();
+
+        // Rename new field
+        var count = parseInt($('#field_count').attr('value'), 10);
+        console.log('Init with count = ' + count);
+        $('#field_count').attr('value', count + 1);
+
+        console.log(tr.find('input'));
+        
+        console.log(tr.find("input[name*='dmx']").attr('name'));
+        console.log(' becomes ');
+        
+        tr.find("input[name*='dmx']").attr('name', 'inputs[' + count + '][dmx]');
+        tr.find("input[name*='del']").attr('name', 'inputs[' + count + '][type_del]');
+        tr.find("input[name*='led']").attr('name', 'inputs[' + count + '][type_led]');
+        
+        console.log(tr.find("input[name*='dmx']").attr('name'));
+    });
+
+// Toggle selected spotlight type.
+$('.spot_type')
+    .on("change", function() {
     
+        console.log('Updated');
+       
+        var off = $(this).find("input[value^='off']")[0];
+        var on = $(this).find("input[value^='on']")[0];
+
+        $(off).attr("value", "on");
+        $(on).attr("value", "off");
     });
 
 /******* PATCH/CONTROL buttons ********/

@@ -13,6 +13,7 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap-theme.min.css') }}" rel="stylesheet">
 
         <!-- jQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -43,17 +44,43 @@
 
         {% block constants %}
 
-        {% set RED_INDEX = 0 %}
-        {% set GREEN_INDEX = 1 %}
-        {% set BLUE_INDEX = 2 %}
-        {% set WHITE_INDEX = 3 %}
+            {% set RED_INDEX = 0 %}
+            {% set GREEN_INDEX = 1 %}
+            {% set BLUE_INDEX = 2 %}
+            {% set WHITE_INDEX = 3 %}
 
-        {% set TYPE_RGB = 1 %}
+            {% set TYPE_RGB = 1 %}
 
         {% endblock %}
 
+        {% block flashMsg %}
+
+            {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="alert alert-success alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <strong>Congrats!</strong> {{ flashMessage }}
+            </div>
+            {% endfor %}
+            
+            {% for flashMessage in app.session.flashbag.get('failure') %}
+            <div class="alert alert-danger alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <strong>Snap!</strong> {{ flashMessage }}
+            </div>
+            {% endfor %}
+
+        {% endblock %}
+        
         {% block body %}{% endblock %}
         <br><br><br>
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+        
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+        {% endblock %}
     </body>
 </html>

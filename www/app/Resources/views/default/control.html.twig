@@ -5,6 +5,8 @@
 {% block body %}
 <div class="container">
 
+    {% block flashMsg %}{{ parent() }}{% endblock %}
+
     <!-- HEADER -->
     <div class="row" id="header">
         <h1 class="col-xs-12" id="header_title">ChampyLight Controller</h1>
@@ -76,8 +78,29 @@
                 {% set data_slider_blue_value   = channel.spotlights[0].dmxs[2].intensity %}
                 {% set data_slider_white_value  = channel.spotlights[0].dmxs[3].intensity %}
 
+                {# Creating hidden fields for other RGB spotlights of patch #}
+                {% for idx,sibling in channel.spotlights if sibling.dmxs[0].address != data_slider_red_addr %}
+
+                <input type="hidden" 
+                       name="cascade[{{ data_slider_red_addr }}][{{idx}}]" 
+                       value="{{sibling.dmxs[0].address}}">
+
+                <input type="hidden" 
+                       name="cascade[{{ data_slider_green_addr }}][{{idx}}]" 
+                       value="{{sibling.dmxs[1].address}}">
+                       
+                <input type="hidden" 
+                       name="cascade[{{ data_slider_blue_addr }}][{{idx}}]" 
+                       value="{{sibling.dmxs[2].address}}">
+                       
+                <input type="hidden" 
+                       name="cascade[{{ data_slider_white_addr }}][{{idx}}]" 
+                       value="{{sibling.dmxs[3].address}}">
+
+                {% endfor %}
+
             {% endif %}
-            
+
             <div class="channel channel_{{ channel_no }} col-lg-4 col-sm-6 col-xs-12">
                 <div class="channel_content row">
                     <div class="channel_side channel_side_left col-xs-2">
@@ -188,6 +211,8 @@
 {% endblock %}
 
 {% block javascripts %}
+
+{{ parent() }}
 
 <!-- Scripts for sliders-->
 <script type='text/javascript' src="{{ asset('bootstrap-slider/js/bootstrap-slider.js') }}"></script>

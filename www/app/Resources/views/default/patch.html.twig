@@ -5,6 +5,9 @@
 {% block body %}
 <div class="container">
 
+    <!-- Flash message -->
+    {% block flashMsg %}{{ parent() }}{% endblock %}
+    
     <!-- HEADER -->
     <div class="row" id="header">
         <h1 class="col-xs-12" id="header_title">ChampyLight Controller</h1>
@@ -94,7 +97,9 @@
                                         <i class="fa fa-sliders"></i>
                                     </span>
                                     <input type="text" name="channel_selected" class="form-control" 
-                                                placeholder="Channel number" aria-describedby="basic-addon1">
+                                            placeholder="Channel number" aria-describedby="basic-addon1">
+
+                                    <input type="hidden" name="field_count" id="field_count" value="1">
                                 </div>
                             </div>
                         
@@ -104,16 +109,16 @@
                                     <table class="table" id="dmx_inputs">
                                         <tr>
                                             <td>
-                                                <input type="text" class="dmx_input" name="input_1" placeholder="DMX (starting) address">
+                                                <input type="text" class="dmx_input" name="inputs[0][dmx]" placeholder="DMX (starting) address">
                                             </td>
                                             <td>
                                                 <div class="col-xs-6 spot_type btn-group" data-toggle="buttons">
                                                     <label class="btn btn-primary active">
-                                                        <input type="radio" name="light_type_del" id="del" checked>
+                                                        <input type="radio" name="inputs[0][type_del]" value="on">
                                                         <i class="fa fa-lightbulb-o">  PAR</i>
                                                     </label>
                                                     <label class="btn btn-primary">
-                                                      <input type="radio" name="light_type_led" id="led">
+                                                      <input type="radio" name="inputs[0][type_led]" value="off">
                                                       <i class="fa fa-spinner">  LED</i>
                                                     </label>
                                                 </div>
@@ -150,6 +155,8 @@
 {% endblock %}
 
 {% block javascripts %}
+
+{# parent() #}
 
 <!-- Scripts for patch -->
 <script type='text/javascript' src="js/bootstrap.min.js"></script>

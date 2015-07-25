@@ -1,3 +1,14 @@
 {% for intensity in intensities %}
-{{ intensity }}\n
+
+{% if intensity < 10 %}
+00{{intensity}}
+
+{% elseif intensity < 100 %}
+0{{intensity}}
+
+{% else %}
+{{intensity}}
+
+{% endif %}
+
 {% endfor %}

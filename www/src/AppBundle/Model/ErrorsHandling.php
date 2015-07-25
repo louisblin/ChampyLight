@@ -29,4 +29,9 @@ class ErrorsHandling {
                             . $error->getMessage();
         }
     }
+
+    public static function getErrorMsg() {
+    
+        return $last_error_msg;
+    }
 }

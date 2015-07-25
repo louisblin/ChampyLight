@@ -50,9 +50,12 @@ class DefaultController extends Controller
     }
 
     private static function createPatchTable() {
-        
+
         $raw_channels = DataQueries::getAllChannels();
         $channels = array();
+
+        //echo "<br>Query gave:<br>";
+        //print_r($raw_channels);
 
         // For all rows
         $i = 0;
@@ -103,15 +106,15 @@ class DefaultController extends Controller
                 
                 } else {
                     $is_rgb_patch = false;
+                    
+                    // Updating values only for BW since RGB is updated up there
+                    $i++;
                 }
                 
                 $new_patch->appendSpotlight($new_spotlight);
                 
                 //echo "<br><br>Added spotlight:";
                 //print_r($new_spotlight->dmxs);
-
-                // Updating values
-                $i++;
 
                 // Exit if end of raw_channels
                 if ($i < count($raw_channels)) {

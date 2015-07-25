@@ -60,7 +60,7 @@ class DataQueries {
         
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
 
             ErrorsHandling::reportPDOError($e);
             return -1;
@@ -90,7 +90,7 @@ class DataQueries {
         
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
 
             ErrorsHandling::reportPDOError($e);
             return -1;
@@ -122,7 +122,7 @@ class DataQueries {
         
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
 
             ErrorsHandling::reportPDOError($e);
             return -1;
@@ -154,7 +154,7 @@ class DataQueries {
         
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
 
             ErrorsHandling::reportPDOError($e);
             return -1;
@@ -188,7 +188,7 @@ class DataQueries {
         
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
 
             ErrorsHandling::reportPDOError($e);
             return -1;
@@ -224,7 +224,7 @@ class DataQueries {
         
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
 
             ErrorsHandling::reportPDOError($e);
             return -1;
@@ -258,7 +258,7 @@ class DataQueries {
 
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             
             ErrorsHandling::reportPDOError($e);        
             return NULL;
@@ -286,7 +286,7 @@ class DataQueries {
 
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             
             ErrorsHandling::reportPDOError($e);        
             return false;
@@ -311,7 +311,7 @@ class DataQueries {
 
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             
             ErrorsHandling::reportPDOError($e);        
             return false;
@@ -337,7 +337,7 @@ class DataQueries {
 
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             
             ErrorsHandling::reportPDOError($e);        
             return false;
@@ -363,7 +363,7 @@ class DataQueries {
 
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             
             ErrorsHandling::reportPDOError($e);        
             return false;
@@ -381,6 +381,8 @@ class DataQueries {
         require_once 'DbConnection.php';
         
         global $event_name;
+
+        $event_name = "default";
         global $db, $dbName, $patch;
 
         $sql = "INSERT INTO " . $dbName . "." . $patch . " ("
@@ -407,12 +409,8 @@ class DataQueries {
 
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
 
-            // TODO: Check if error occured because of: 
-            // - missing channel in `channel_intensity`
-            // - already defined dmx input
-            
             ErrorsHandling::reportPDOError($e);        
             return false;
         }
@@ -435,7 +433,7 @@ class DataQueries {
 
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
 
             ErrorsHandling::reportPDOError($e);
             return false;
@@ -977,7 +975,7 @@ class DataQueries {
 
         try {
             $q->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
 
             ErrorsHandling::reportPDOError($e);
             return false;
