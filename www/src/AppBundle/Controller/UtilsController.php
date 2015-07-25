@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-//use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use AppBundle\Model\DataQueries;
@@ -315,9 +314,55 @@ class UtilsController extends Controller
             $intensities[] = DataQueries::getOverallIntensityForDMX($i); 
         }
 
-        return $this->render(
-            'default/render.html.php',
-            array("intensities" => $intensities)
-        );
+        // Creating answer
+        $response = 0;
+
+        foreach ($intensities as $intensity) {
+        
+            //echo '000';
+            //echo '005';
+
+            //echo '255';
+            //echo '000';
+            //echo '000';
+            //echo '000';
+            //
+            //echo '000';
+            //echo '255';
+            //echo '000';
+            //echo '000';
+
+            //echo '000';
+            //echo '000';
+            //echo '255';
+            //echo '000';
+            //
+            //echo '255';
+            //echo '255';
+            //echo '000';
+            //echo '000';
+            //
+            //echo '255';
+            //echo '000';
+            //echo '255';
+            //echo '000';
+            //
+            //echo '000';
+            //echo '255';
+            //echo '255';
+            //echo '000';
+
+            if ($intensity < 10) {
+                echo "00" . $intensity;
+            }
+            else if ($intensity < 100) {
+                echo "0" . $intensity;
+            }
+            else {
+                echo $intensity;
+            } 
+        }
+        
+        return new Response($response);
     }
 }
