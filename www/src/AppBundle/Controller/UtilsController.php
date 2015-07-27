@@ -262,14 +262,46 @@ class UtilsController extends Controller
                 }
             }
             else {
-                $success = false;
-                $error_msg .= 'cascade not defined in POST...';
+                //$success = false;
+                //$error_msg .= 'cascade not defined in POST...';
             }
         }
         else {
             $success = false;
             $error_msg .= 'dmxs not defined in POST...';
         }
+        
+        /********************************************************************/
+
+        $intensities = array();
+
+        // Meta
+        $intensities[] = DataQueries::getTransitionType();
+        $intensities[] = DataQueries::getTransitionFadeTI();
+
+        // Dmx values
+        for ($i = 1; $i <= 512; $i++) {
+            $intensities[] = DataQueries::getOverallIntensityForDMX($i); 
+        }
+        
+        $data = "";
+
+        foreach ($intensities as $intensity) {
+            
+            if ($intensity < 10) {
+                $data .= "00" . $intensity;
+            }
+            else if ($intensity < 100) {
+                $data .= "0" . $intensity;
+            }
+            else {
+                $data .= $intensity;
+            } 
+        }
+        $xml = file_get_contents("http://www.doc.ic.ac.uk/~lb3214/light/put_render_data.php?data=" . $data);
+        
+        /********************************************************************/
+        
         
         // GENERATING ouput
         if ($success) {

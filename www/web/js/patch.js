@@ -25,6 +25,13 @@ window.onload = function() {
  
     init_adding_modal();
     $('#field_count').attr('value', 1);
+    
+    // Close success flash message
+    setTimeout(function () {
+    
+        $('.alert-success').alert('close');
+    
+    }, 2000);
 };
 
 /********* Patch Del / Add  ***********/

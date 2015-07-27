@@ -94,6 +94,13 @@ window.onload = function() {
     set_color_backgrounds();
     set_intensity_values();
 
+    // Close success flash message
+    setTimeout(function () {
+    
+        $('.alert-success').alert('close');
+    
+    }, 2000);
+    
     // To ask the user if if really wants to change page after having modified
     //  the sliders values
     has_user_updated_sliders = false;
