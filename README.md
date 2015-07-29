@@ -35,9 +35,9 @@ Louis Blin, student in 1st year at Imperial College London.
 This project is based on the "Raspberry Pi as a DMX light controller"
 (http://www.instructables.com/id/Raspberry-Pi-as-a-DMX-light-controller/).
 
-The code I took from this project was:
-- 100% of the deamon dmxd.c
-- adapted the dmx.c utiliy file.
+The code I took from this project and adapted was:
+- the deamon dmxd.c
+- dmx.c utiliy file.
 
 ## License: Attribution Non-commercial Share Alike (by-nc-sa)
 
@@ -45,4 +45,6 @@ This license lets others remix, tweak, and build upon your work non-commercially
 
 # Usage
 
-TODO
+First of all, you want to set up your Raspberry Pi by starting the `dmxd.c` 
+deamon with root privileges, and the `champylight` program. Next, as long as
+your web interface is configured, you're ready to go.

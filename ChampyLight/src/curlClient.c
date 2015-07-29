@@ -17,7 +17,7 @@ void getWebValues(uint8_t *values) {
     CURL *curl = NULL;
     CURLcode res = -1;
     FILE *stream = NULL;
-    
+   
     if((stream = freopen(TCP_OUT, "w", stdout)) == NULL) {
         fprintf(stderr, "Couldn't redirect stdout...\n");
         exit(EXIT_FAILURE);
@@ -32,11 +32,13 @@ void getWebValues(uint8_t *values) {
  
         // Perform the request, res will get the return code
         res = curl_easy_perform(curl);
-        
-        // Check for errors 
-        if(res != CURLE_OK)
-          fprintf(stderr, "curl_easy_perform() failed: %s\n",
-                  curl_easy_strerror(res));
+
+        // If error, keep the original values
+        if(res != CURLE_OK) {
+            fprintf(stderr, "curl_easy_perform() failed: %s\n",
+                    curl_easy_strerror(res));
+            return;
+        }
  
         // Always cleanup
         curl_easy_cleanup(curl);
@@ -75,7 +77,7 @@ void parseAndStoreFile(uint8_t *values) {
             break;
         }
         
-        // Parsed number range
+        // Ignore numbers out of range
         if (intNb < 0 || intNb > DEPTH) {
             fprintf(stderr, "parseAndStoreFile: Number format of %d\n", intNb);
             continue;

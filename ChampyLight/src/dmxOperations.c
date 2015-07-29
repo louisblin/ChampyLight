@@ -52,7 +52,7 @@ void executeDMX(dmx_exec_t *in, uint8_t startValues[]) {
             break;
 
         default:
-            fprintf(stderr, "'Invalid transition type %d.\n", in->type);
+            fprintf(stderr, "'Invalid transition type %d... Abording.\n", in->type);
     }
 
     free(startValuesCopy);
@@ -84,7 +84,7 @@ void executeRegular(dmx_exec_t *in,
 
     // Dmx
     uint8_t *endValues = arrcp(in->values, CH_COUNT);
-    uint8_t diffValues[CH_COUNT] = {0};
+    int8_t diffValues[CH_COUNT] = {0};
     uint8_t *currValues =  arrcp(startValues, CH_COUNT);
 
     // Computing diff (end - start)

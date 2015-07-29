@@ -20,7 +20,6 @@
 // Curl
 #define TIMEOUT         2
 #define REMOTE_ADDR     "www.doc.ic.ac.uk/~lb3214/champylightTestFile.php"
-//#define REMOTE_ADDR     "localhost:8000/render"
 #define TCP_OUT         "curl_output.txt"
 
 // Dmx operations
@@ -31,8 +30,8 @@
 #define STROBE_LENGTH   300   // Time length of the strobe effect (MILLIS)
 
 // Utils
-//#define VERBOSE
-//#define DEBUG
+#define VERBOSE
+#define DEBUG
 //#define BEBUG_TCP
 
 #define SLOT_TO_SHOW    512

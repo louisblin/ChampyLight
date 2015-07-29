@@ -1011,3 +1011,4 @@ CREATE TABLE patch (
     CONSTRAINT channel_validity check (0 <= channel AND channel <= 512)
 );
 
+ */
