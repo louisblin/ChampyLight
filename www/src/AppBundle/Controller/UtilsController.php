@@ -15,9 +15,7 @@ class UtilsController extends Controller
      * @Route("/add_patch", name="add_patch")
      */
     public function addAction()
-    {
-        print_r($_POST);
-        
+    {        
         $success = true;
         $error_msg = "";
 
@@ -49,15 +47,17 @@ class UtilsController extends Controller
 
                 $dmx = $input['dmx'];
                 
-                try {
+                if (isset($input['type_led'])) {
                     $isLed = $input['type_led'];
-                } catch (\Exception $e) {
-                    $isLed = 'off';   
                 }
-
-                try {
+                else {
+                    $isLed = 'off';                    
+                }
+                
+                if (isset($input['type_del'])) {
                     $isDel = $input['type_del'];
-                } catch (\Exception $e) {
+                }
+                else {
                     $isDel = (strcmp($isLed, 'on') == 0 ? 'off' : 'on');
                 }
 
