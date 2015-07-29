@@ -60,7 +60,7 @@ class UtilsController extends Controller
                 } catch (\Exception $e) {
                     $isDel = (strcmp($isLed, 'on') == 0 ? 'off' : 'on');
                 }
-                
+
                 // Consistency checks...
                 if (!isset($dmx)) {
                     $success = false;
@@ -237,18 +237,18 @@ class UtilsController extends Controller
         // Dmx
         if (isset($_POST['dmxs'])) {
 
-            if (isset($_POST['cascade'])) {
-                $cascade = $_POST['cascade'];
+            foreach ($_POST['dmxs'] as $dmxAddr => $intensity) {
                 
-                foreach ($_POST['dmxs'] as $dmxAddr => $intensity) {
-                    
-                    DataQueries::setIntensityForDMX(
-                        htmlspecialchars($dmxAddr),
-                        htmlspecialchars($intensity)
-                    );
+                DataQueries::setIntensityForDMX(
+                    htmlspecialchars($dmxAddr),
+                    htmlspecialchars($intensity)
+                );
 
-                    // Update siblings, if any, to the same intensity as 
-                    // leading spotlight...
+                // Update siblings, if any, to the same intensity as 
+                // leading spotlight...
+                if (isset($_POST['cascade'])) {
+                    $cascade = $_POST['cascade'];
+                
                     if (isset($cascade[$dmxAddr])) {
 
                         foreach ($cascade[$dmxAddr] as $siblingDmxAddr) {
@@ -261,47 +261,11 @@ class UtilsController extends Controller
                     }
                 }
             }
-            else {
-                //$success = false;
-                //$error_msg .= 'cascade not defined in POST...';
-            }
         }
         else {
             $success = false;
             $error_msg .= 'dmxs not defined in POST...';
         }
-        
-        /********************************************************************/
-
-        $intensities = array();
-
-        // Meta
-        $intensities[] = DataQueries::getTransitionType();
-        $intensities[] = DataQueries::getTransitionFadeTI();
-
-        // Dmx values
-        for ($i = 1; $i <= 512; $i++) {
-            $intensities[] = DataQueries::getOverallIntensityForDMX($i); 
-        }
-        
-        $data = "";
-
-        foreach ($intensities as $intensity) {
-            
-            if ($intensity < 10) {
-                $data .= "00" . $intensity;
-            }
-            else if ($intensity < 100) {
-                $data .= "0" . $intensity;
-            }
-            else {
-                $data .= $intensity;
-            } 
-        }
-        $xml = file_get_contents("http://www.doc.ic.ac.uk/~lb3214/light/put_render_data.php?data=" . $data);
-        
-        /********************************************************************/
-        
         
         // GENERATING ouput
         if ($success) {
