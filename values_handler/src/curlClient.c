@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <curl/curl.h>
+#include <stdbool.h>
 
 #include "constants.h"
 #include "curlClient.h"
@@ -10,8 +11,12 @@
 /**
  * Fetches the values stored on the web interface at `REMOTE_ADDR`, and stores
  * them into `values`.
+ * Returns:
+ * - true if fetched values are new.
+ * - false if these values were already fetched in the last request, or
+ *   fetching failed.
  */
-void getWebValues(uint8_t *values) {
+bool getWebValues(uint8_t *values) {
     
     CURL *curl = NULL;
     CURLcode res = -1;
@@ -37,7 +42,7 @@ void getWebValues(uint8_t *values) {
         if(res != CURLE_OK) {
             fprintf(stderr, "curl_easy_perform() failed: %s\n",
                     curl_easy_strerror(res));
-            return;
+            return false;
         }
  
         // Always cleanup
@@ -51,14 +56,16 @@ void getWebValues(uint8_t *values) {
     printf("\nStream captured from the %s:\n", REMOTE_ADDR);
     #endif
 
-    parseAndStoreFile(values);
+    return parseAndStoreFile(values);
 }
 
 /**
  *  Parses the fetched values, and stores them into `values`. If a values has
  *  an illegal values, it is ignored and a message is raised on stderr.
  */
-void parseAndStoreFile(uint8_t *values) {
+bool parseAndStoreFile(uint8_t *values) {
+
+    bool isNew = false;
 
     FILE *fp = NULL;
     if ((fp = fopen(TCP_OUT, "r")) == NULL) {
@@ -88,6 +95,12 @@ void parseAndStoreFile(uint8_t *values) {
             continue;
         }
 
+        // Is this value new?
+        uint8_t currValue = atoi(buffer);
+        if (values[count] != currValue) { // Value is new
+            isNew = true;
+        }
+
         values[count++] = (uint8_t) atoi(buffer);
     }
     #ifdef VERBOSE
@@ -97,4 +110,6 @@ void parseAndStoreFile(uint8_t *values) {
     // TODO: Log of errors with further error handling in file rw... 
 
     fclose(fp);
+
+    return isNew;
 }

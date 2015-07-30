@@ -22,7 +22,9 @@
 /**
  *  Aim of the main function:
  *  - init the dmx connection on start.
- *  - run fetch-decode-execute cycles in order to update the DMX values
+ *  - run fetch-decode-execute cycles in order to update the DMX values. NB: if 
+ *    fetched values are the same as on the last cycle, the decode-execute part
+ *    of the cycle is dropped.
  *  - closes the dmx connection on exit.
  */
 int main( int argc, char *argv[]) {
@@ -37,9 +39,12 @@ int main( int argc, char *argv[]) {
     // Main program loop
     while (isRunning()) {
    
-        getWebValues(webValues);
-        dmx_exec_t *exec = decodeDMX(webValues);
-        executeDMX(exec, shmValues);
+        bool areNewValues = getWebValues(webValues);
+        
+        if (areNewValues) {
+            dmx_exec_t *exec = decodeDMX(webValues);
+            executeDMX(exec, shmValues);
+        }
 
         // Suspend before next update
         sleep_ms(REFRESH_TI);
