@@ -149,7 +149,10 @@ void executeRegular(dmx_exec_t *in,
  */
 
 /**
- * Executes a strobe effect.
+ * Executes a strobe effect: flashes the received values during in->fade_ti 
+ * seconds, and at a fixed frequency of 1000/STROBE_PERIOD (NB: STROBE_PERIOD
+ * is in millis).
+ * At the end of the effect, the original values are restored.
  */
 void executeStrobe(dmx_exec_t *in, uint8_t startValues[]) {
 
@@ -161,6 +164,7 @@ void executeStrobe(dmx_exec_t *in, uint8_t startValues[]) {
 
     // Dmx
     uint8_t *strobeValues = in->values;
+    uint8_t strobeLength  = in->fade_ti * 1000;
     uint8_t *blackValues  = calloc(CH_COUNT, sizeof(uint8_t));
 
     do {
@@ -175,12 +179,12 @@ void executeStrobe(dmx_exec_t *in, uint8_t startValues[]) {
         }
         isBlack = !isBlack;
 
-        // Sleep for the time interval given: fade_ti
-        millis_elapsed += updateTime(&t0, &t1, in->fade_ti);
+        // Sleep until next period begins
+        millis_elapsed += updateTime(&t0, &t1, STROBE_PERIOD);
 
-    } while(millis_elapsed < STROBE_LENGTH);
+    } while(millis_elapsed < strobeLength);
 
-    // Set to end values
+    // Set values back to their orignal ones.
     dmxSetValues(0, CH_COUNT, startValues);
     free(blackValues);
 }
