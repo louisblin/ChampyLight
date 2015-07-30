@@ -19,6 +19,12 @@
 #include "dmxOperations.h"
 #include "champylight.h"
 
+/**
+ *  Aim of the main function:
+ *  - init the dmx connection on start.
+ *  - run fetch-decode-execute cycles in order to update the DMX values
+ *  - closes the dmx connection on exit.
+ */
 int main( int argc, char *argv[]) {
 
     uint8_t *webValues = calloc(WEB_SIZE, sizeof(uint8_t));
@@ -45,6 +51,11 @@ int main( int argc, char *argv[]) {
     return EXIT_SUCCESS;
 }
 
+/**
+ *  Initialises the DMX connection, i.e. the shared memory segment which is the
+ *  way the program communicates with the deamon that sends the values to the
+ *  spotlights.
+ */
 int initDMX(uint8_t **shmValues) {
 
     // Open DMX interface
@@ -55,6 +66,9 @@ int initDMX(uint8_t **shmValues) {
     return 0;
 }
 
+/**
+ *  Closes the DMX connection, and frees any variable on the heap.
+ */
 void exitDMX(uint8_t *webValues) {
 
     // Blackout

@@ -13,6 +13,9 @@
 #include "constants.h"
 #include "utils.h"
 
+/**
+ *  Prints the state of the shared memory to stdout in a readable way.
+ */
 void printSHM(uint8_t values[]) {
 
     printf("\nPrinting shared memory...\n");
@@ -33,6 +36,10 @@ void printSHM(uint8_t values[]) {
     }
 }
 
+/**
+ *  Copies the first `length` elements of `src` array in a new array and return
+ *  a pointer to this array.
+ */
 uint8_t* arrcp(uint8_t const *src, size_t length) {
 
     uint8_t *p = malloc(length * sizeof(uint8_t));
@@ -40,6 +47,9 @@ uint8_t* arrcp(uint8_t const *src, size_t length) {
     return p;
 }
 
+/** 
+ *  Pauses the execution for `millis` ms.
+ */
 void sleep_ms (int millis) {
 
     if (millis <= 0) {

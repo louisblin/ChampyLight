@@ -32,7 +32,6 @@
 // Utils
 #define VERBOSE
 #define DEBUG
-//#define BEBUG_TCP
 
 #define SLOT_TO_SHOW    512
 #define MEM_PER_LINE    4     // Number of consecutive mem slots per line 

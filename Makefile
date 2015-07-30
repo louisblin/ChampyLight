@@ -1,6 +1,6 @@
 CdC=gcc
 
-TARGETS=dmx ChampyLight
+TARGETS=deamon values_handler
 
 all: $(TARGETS)
 	for i in $(TARGETS); \

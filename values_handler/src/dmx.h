@@ -11,7 +11,6 @@ int     dmxOpen           (uint8_t **shmValues);
 void    dmxClose          ();
 void    dmxSetValue       (uint8_t channel, uint8_t value);
 void    dmxSetValues      (unsigned int fromCh, int count, uint8_t values[]);
-uint8_t dmxGetValue       (uint8_t channel);
 bool    isRunning         ();
 
 void    printSHMState     ();

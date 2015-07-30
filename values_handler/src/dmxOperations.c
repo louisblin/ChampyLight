@@ -15,17 +15,37 @@ inline static double lin(const double t);
 inline static double cres(const double t);
 inline static double decr(const double t);
 
-
+/**
+ *  Decode the fetched values and creates a `dmx_exec_t` structure that represents
+ *  a transition. This object is then returns to the caller.`
+ *  If the transition fade time interval is out of range, it is set to 1.
+ */
 dmx_exec_t* decodeDMX(uint8_t values[]) {
 
     dmx_exec_t *out = calloc(1, sizeof(dmx_exec_t));
+    
+    // All the following values are in the range [0..255], after the parsing
+    // in curlClient.c
+
+    // If not in range, handled in executeDMX...
     out->type = values[WEB_TRANS_ID];
+    
+    // If not in range [1..255], set fade_ti to 1...
     out->fade_ti = values[WEB_FADE_TI];
+    if (out->fade_ti < 1) {
+        out->fade_ti = (uint8_t) 1;
+    }
+
+    // Already all in range
     out->values = &values[WEB_CHAN_I]; 
 
     return out;
 }
 
+/**
+ *  Execute the transition, given the transition structure `in` and the current
+ *  values of the spotlights before the transition start `startValues`.
+ */
 void executeDMX(dmx_exec_t *in, uint8_t startValues[]) {
 
     if (in == NULL) {
@@ -52,7 +72,8 @@ void executeDMX(dmx_exec_t *in, uint8_t startValues[]) {
             break;
 
         default:
-            fprintf(stderr, "'Invalid transition type %d... Abording.\n", in->type);
+            fprintf(stderr, "'Invalid transition type %d... Using default(linear).\n", in->type);
+            executeRegular(in, startValuesCopy, &lin);
     }
 
     free(startValuesCopy);
@@ -73,6 +94,10 @@ inline static double decr(const double t) {
     return round(pow(t, DECR_EXP));
 }
 
+/**
+ *  Execute a regular transition (i.e. with a transition speed that a function
+ *  can represent).
+ */
 void executeRegular(dmx_exec_t *in, 
                     uint8_t startValues[],
                     double (*coef_func)(const double)) {
@@ -117,6 +142,14 @@ void executeRegular(dmx_exec_t *in,
     printSHMState();
 }
 
+/**
+ * Executes a speical type of transition, a `special effect` that don't have any
+ * similarity as regular transition have.
+ */
+
+/**
+ * Executes a strobe effect.
+ */
 void executeStrobe(dmx_exec_t *in, uint8_t startValues[]) {
 
     bool isBlack = false;
@@ -151,12 +184,19 @@ void executeStrobe(dmx_exec_t *in, uint8_t startValues[]) {
     free(blackValues);
 }
 
+/**
+ *  Returns the current time and stores it in t0.
+ */
 void startTime(struct timeval *t0) {
         
     // Start timer... | t0
     gettimeofday(t0, 0);
 }
 
+/**
+ *  Updates the transition time, i.e. wait the right number of seconds between
+ *  the next transition cycle.
+ */
 int updateTime(struct timeval *t0, struct timeval *t1, 
                                          unsigned int sleepTime) {
 #ifdef VERBOSE

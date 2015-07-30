@@ -24,6 +24,10 @@ uint8_t  *chanData;       // 512 byte array of channel data
 uint8_t  *shm;            // shared memory segment containing data & ctrl regs
 int      shmid = -1;      // handel to shared memory segment
 
+/**
+ *  Opens the dmx shared memory segment with the deamon dmxd.c.
+ *  Returns a non zero value if something went wrong.
+ */
 int dmxOpen(uint8_t **shmValues) {
 
 #ifndef DEBUG
@@ -60,6 +64,9 @@ int dmxOpen(uint8_t **shmValues) {
 
 }
 
+/**
+ *  Closes the dmx shared memory segment.
+ */
 void dmxClose() {
     if (shmid != -1) {
         shmdt(shm);
@@ -70,10 +77,17 @@ void dmxClose() {
 #endif
 }
 
+/**
+ *  Sets the value of `channel` with the value `data`.
+ */
 void dmxSetValue(uint8_t channel, uint8_t data) {
     chanData[channel] = data;
 }
 
+/**
+ *  Sets a continuous block of `count` channels starting at `fromCh` with the
+ *  values `values[]`.
+ */
 void dmxSetValues(unsigned int fromCh, int count, uint8_t values[]) {
     
     // Set the channel colors
@@ -82,15 +96,18 @@ void dmxSetValues(unsigned int fromCh, int count, uint8_t values[]) {
     }
 }
 
-uint8_t dmxGetValue(uint8_t channel) {
-    return chanData[channel];
-}
-
+/**
+ * Return a boolean value defining if the deamon stopped, and weither this
+ * program should stop too.
+ */
 bool isRunning() {
     
     return *exitAddr == 0;
 }
 
+/**
+ *  Prints the shared memory using the util.c function printSHM().
+ */
 void printSHMState() {
     printSHM(shm);
 }

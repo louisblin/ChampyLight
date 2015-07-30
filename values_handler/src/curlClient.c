@@ -5,13 +5,10 @@
 #include "constants.h"
 #include "curlClient.h"
 
-#ifdef BEBUG_TCP
-int main(void) {
-    getWebValues(NULL);
-    return 0;
-}
-#endif
-
+/**
+ * Fetches the values stored on the web interface at `REMOTE_ADDR`, and stores
+ * them into `values`.
+ */
 void getWebValues(uint8_t *values) {
     
     CURL *curl = NULL;
@@ -54,6 +51,10 @@ void getWebValues(uint8_t *values) {
     parseAndStoreFile(values);
 }
 
+/**
+ *  Parses the fetched values, and stores them into `values`. If a values has
+ *  an illegal values, it is ignored and a message is raised on stderr.
+ */
 void parseAndStoreFile(uint8_t *values) {
 
     FILE *fp = NULL;

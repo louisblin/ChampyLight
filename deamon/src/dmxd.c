@@ -34,7 +34,7 @@
 #include <errno.h>
 #include <stdint.h>
 
-#include "../../ChampyLight/src/constants.h"
+#include "../../values_handler/src/constants.h"
 
 // dmx data and control registers
 typedef unsigned char ubyte;

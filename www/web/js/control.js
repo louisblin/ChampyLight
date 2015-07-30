@@ -110,7 +110,7 @@ window.onload = function() {
 
 $("#slider_timer").slider({
     min: 0,
-    max: 1800,
+    max: 255,
     scale: 'logarithmic',
     step: 1
 });
