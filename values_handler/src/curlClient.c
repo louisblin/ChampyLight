@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <curl/curl.h>
 
 #include "constants.h"
 #include "curlClient.h"
+#include "utils.h"
 
 /**
  * Fetches the values stored on the web interface at `REMOTE_ADDR`, and stores
@@ -17,6 +19,7 @@ void getWebValues(uint8_t *values) {
    
     if((stream = freopen(TCP_OUT, "w", stdout)) == NULL) {
         fprintf(stderr, "Couldn't redirect stdout...\n");
+        switch_to_idle_state(values);
         exit(EXIT_FAILURE);
     }
     
@@ -60,6 +63,7 @@ void parseAndStoreFile(uint8_t *values) {
     FILE *fp = NULL;
     if ((fp = fopen(TCP_OUT, "r")) == NULL) {
         fprintf(stderr, "parseAndStoreFile: error opening file\n");
+        switch_to_idle_state(values);
         exit(EXIT_FAILURE);
     }
 
@@ -94,4 +98,3 @@ void parseAndStoreFile(uint8_t *values) {
 
     fclose(fp);
 }
-

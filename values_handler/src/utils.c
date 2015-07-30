@@ -66,3 +66,14 @@ void sleep_ms (int millis) {
 #endif
 }
 
+/** 
+ *  Called if the program has to close after an unexpected error occured.
+ */
+void switch_to_idle_state(uint8_t *values) {
+
+    // Sets the spotlights to full power (better than a blackout...)
+    fprintf(stderr, 
+            "Switching %d channels to idle state with value %d.\n", CH_COUNT, DEPTH);
+    memset((values + SHM_CHAN_I), DEPTH, CH_COUNT);
+}
+
