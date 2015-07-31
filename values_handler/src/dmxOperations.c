@@ -49,7 +49,7 @@ dmx_exec_t* decodeDMX(uint8_t values[]) {
 void executeDMX(dmx_exec_t *in, uint8_t startValues[]) {
 
     if (in == NULL) {
-        fprintf(stderr, "dmx_exec_t pointer was null... abording.\n");
+        fprintf(stderr, "\n\ndmx_exec_t pointer was null... abording.\n");
         switch_to_idle_state(startValues);
         exit(EXIT_FAILURE);
     }

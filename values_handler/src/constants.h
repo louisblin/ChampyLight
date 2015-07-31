@@ -27,7 +27,7 @@
 #define CRES_EXP        2.85f // Exp of crescendo coef function
 #define DECR_EXP        0.35f // Exp of decrescendo coef function
 #define DMX_REFRESH_TI  100   // TI between 2 DMX packets  (MILLIS)
-#define STROBE_PERIOD   250   // Length of a period of the strobe  (MILLIS)
+#define STROBE_PERIOD   100   // Length of a period of the strobe  (MILLIS)
 
 // Utils
 #define VERBOSE

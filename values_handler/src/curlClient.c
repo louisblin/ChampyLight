@@ -24,7 +24,7 @@ bool getWebValues(uint8_t *values) {
     FILE *stream = NULL;
    
     if((stream = freopen(TCP_OUT, "w", stdout)) == NULL) {
-        fprintf(stderr, "Couldn't redirect stdout...\n");
+        fprintf(stderr, "\n\nCouldn't redirect stdout...\n");
         switch_to_idle_state(values);
         exit(EXIT_FAILURE);
     }
@@ -70,7 +70,7 @@ bool parseAndStoreFile(uint8_t *values) {
 
     FILE *fp = NULL;
     if ((fp = fopen(TCP_OUT, "r")) == NULL) {
-        fprintf(stderr, "parseAndStoreFile: error opening file\n");
+        fprintf(stderr, "\n\nparseAndStoreFile: error opening file\n");
         switch_to_idle_state(values);
         exit(EXIT_FAILURE);
     }

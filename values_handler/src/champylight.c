@@ -49,7 +49,7 @@ int main( int argc, char *argv[]) {
         // Suspend before next update
         sleep_ms(REFRESH_TI);
     }
-    
+
     // Terminate
     exitDMX(webValues);
 

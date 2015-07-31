@@ -9,8 +9,10 @@
 #include <sys/time.h>
 #include <time.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 #include "constants.h"
+#include "dmx.h"
 #include "utils.h"
 
 /**
@@ -72,8 +74,14 @@ void sleep_ms (int millis) {
 void switch_to_idle_state(uint8_t *values) {
 
     // Sets the spotlights to full power (better than a blackout...)
-    fprintf(stderr, 
-            "Switching %d channels to idle state with value %d.\n", CH_COUNT, DEPTH);
+    fprintf(stderr, "+====================================================\n");
+    fprintf(stderr, "| Switching %d channels to idle state with value %d.\n", 
+                        CH_COUNT, DEPTH);
+    fprintf(stderr, "+====================================================\n");
+    
     memset((values + SHM_CHAN_I), DEPTH, CH_COUNT);
+
+    fprintf(stderr, "\nPrinting SHM final state...\n");
+    printSHMState();
 }
 
