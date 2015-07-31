@@ -2,7 +2,7 @@
 #define CONSTANTS_H
 
 // Common values between SHM and WEB
-#define CH_COUNT        34
+#define CH_COUNT        60
 #define DEPTH           255   // MAX value for a channel
 
 // Shared memory
@@ -19,7 +19,7 @@
 
 // Curl
 #define TIMEOUT         2
-#define REMOTE_ADDR     "www.doc.ic.ac.uk/~lb3214/champylightTestFile.php"
+#define REMOTE_ADDR     "champylight.estivales-puisaye.com/web/render" 
 #define TCP_OUT         "curl_output.txt"
 
 // Dmx operations

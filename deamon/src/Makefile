@@ -17,7 +17,7 @@ all: $(LIB) $(DEAMONBIN) $(TESTBIN)
 dmxd.bin: $(DEAMONOBJS)
 	$(CC) -o $@ $(DEAMONOBJS) $(LDFLAGS) -rdynamic	
 	#$(CC) -o $@ -Wl, $(DEAMONOBJS) $(LDFLAGS) -Wl, -rdynamic
-	mv dmxd.bin ../deamon
+	mv dmxd.bin ../bin
 
 
 %.a: $(LIBOJBS)

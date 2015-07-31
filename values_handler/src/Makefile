@@ -12,6 +12,8 @@ all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS) $(LIB) 
+	mkdir -p ../bin
+	mv $@ ../bin/
 
 clean:
 	rm -rf $(TARGET) $(OBJECTS)

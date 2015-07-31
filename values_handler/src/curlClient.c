@@ -7,6 +7,7 @@
 #include "constants.h"
 #include "curlClient.h"
 #include "utils.h"
+#include "dmx.h"
 
 /**
  * Fetches the values stored on the web interface at `REMOTE_ADDR`, and stores
@@ -104,7 +105,8 @@ bool parseAndStoreFile(uint8_t *values) {
         values[count++] = (uint8_t) atoi(buffer);
     }
     #ifdef VERBOSE
-    printf("\nTOTAL READ : %d\n", count);
+    printf("\nTOTAL READ : %d\n\n", count);
+    printSHMState();
     #endif
 
     // TODO: Log of errors with further error handling in file rw... 

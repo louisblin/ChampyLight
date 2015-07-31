@@ -110,13 +110,14 @@ void executeRegular(dmx_exec_t *in,
 
     // Dmx
     uint8_t *endValues = arrcp(in->values, CH_COUNT);
-    int8_t diffValues[CH_COUNT] = {0};
+    int16_t diffValues[CH_COUNT] = {0};
     uint8_t *currValues =  arrcp(startValues, CH_COUNT);
 
     // Computing diff (end - start)
+    printf("diffValues: ");
     for (int i = 0; i < CH_COUNT; i++) {
-         diffValues[i] = endValues[i] - startValues[i];
-    } 
+        diffValues[i] = ((int16_t) endValues[i]) - ((int16_t) startValues[i]);
+    }
 
     do {
         startTime(&t0);
@@ -129,7 +130,7 @@ void executeRegular(dmx_exec_t *in,
         dmxSetValues(0, CH_COUNT, currValues);
 
         #ifdef VERBOSE
-        printf("\n\nTime elapsed is %dms... ", millis_elapsed);
+        printf("\n\nREG: Time elapsed is %dms... ", millis_elapsed);
         #endif
 
         millis_elapsed += updateTime(&t0, &t1, (unsigned int) DMX_REFRESH_TI);
@@ -140,7 +141,6 @@ void executeRegular(dmx_exec_t *in,
     dmxSetValues(0, CH_COUNT, endValues);
     free(endValues);
     free(currValues);
-    printSHMState();
 }
 
 /**
@@ -164,7 +164,7 @@ void executeStrobe(dmx_exec_t *in, uint8_t startValues[]) {
 
     // Dmx
     uint8_t *strobeValues = in->values;
-    uint8_t strobeLength  = in->fade_ti * 1000;
+    uint16_t strobeLength  = in->fade_ti * 1000;
     uint8_t *blackValues  = calloc(CH_COUNT, sizeof(uint8_t));
 
     do {
@@ -179,8 +179,12 @@ void executeStrobe(dmx_exec_t *in, uint8_t startValues[]) {
         }
         isBlack = !isBlack;
 
+        #ifdef VERBOSE
+        printf("\n\nSTOBE: Time elapsed is %dms... ", millis_elapsed);
+        #endif
+        
         // Sleep until next period begins
-        millis_elapsed += updateTime(&t0, &t1, STROBE_PERIOD);
+        millis_elapsed += updateTime(&t0, &t1, (unsigned int) STROBE_PERIOD);
 
     } while(millis_elapsed < strobeLength);
 
@@ -204,9 +208,9 @@ void startTime(struct timeval *t0) {
  */
 int updateTime(struct timeval *t0, struct timeval *t1, 
                                          unsigned int sleepTime) {
-#ifdef VERBOSE
+    #ifdef VERBOSE
     printSHMState();
-#endif
+    #endif
 
     sleep_ms(sleepTime);
 
