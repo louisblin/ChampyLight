@@ -17,19 +17,34 @@
         <div class="row" id="command">
                 
             <!-- Fire transition -->
-            <div class="col-sm-4 col-xs-12" id="fire_transition">
+            <div class="col-sm-3 col-xs-12" id="fire_transition">
                 <button type="submit" class="btn btn-default btn-lg">
                       <span class="glyphicon glyphicon-play" aria-hidden="true"> Fire transition</span>
                   </button>
             </div>
             
             <!-- Transition type -->
-            <div class="col-sm-4 col-xs-12" id="fire_transition" style="display: none;">
-                <input type="hidden" name="transition_type" value="linear">
+            <div class="col-sm-3 col-xs-12" id="fire_transition">
+                <input type="hidden" id="transition_type" name="transition_type" value="linear">
+
+                <!-- Split button -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info" id="transition_type_view">Transition type</button>
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Transition type</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a onclick="changeToType('linear');">Linear</a></li>
+                        <li><a onclick="changeToType('crescendo');">Crescendo</a></li>
+                        <li><a onclick="changeToType('decrescendo');">Decrescendo</a></li>
+                        <li><a onclick="changeToType('strobe');">Strobe</a></li>
+                    </ul>
+                </div>
             </div>
             
             <!-- Timer -->
-            <div class="col-sm-8 col-xs-12" id="timer">
+            <div class="col-sm-6 col-xs-12" id="timer">
                 <input id="slider_timer" 
                        type="text"
                        name="slider_timer"

@@ -106,6 +106,18 @@ window.onload = function() {
     has_user_updated_sliders = false;
 };
 
+/************* TRANS TYPE *************/
+
+function changeToType(newType) {
+
+    $("#transition_type_view")
+        .text(newType.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+            return letter.toUpperCase();
+        })
+    );
+    $("#transition_type").attr('value', newType);
+}
+
 /***************  TIMER ***************/
 
 $("#slider_timer").slider({
