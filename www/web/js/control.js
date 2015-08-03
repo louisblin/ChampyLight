@@ -85,7 +85,11 @@ function set_intensity_values() {
 
             $("#val_int_" + current_channel)
                 .text(Math.floor(value / 2.55))
-        });    
+        });   
+
+    // GM
+    $("#slider_gm_value")
+        .text(Math.floor($('#slider_gm').attr('value') / 2.55));
 }
 
 window.onload = function() {
@@ -101,8 +105,8 @@ window.onload = function() {
     
     }, 2000);
     
-    // To ask the user if if really wants to change page after having modified
-    //  the sliders values
+    // To ask the user if he really wants to change page after having modified
+    // the sliders values
     has_user_updated_sliders = false;
 };
 
@@ -139,9 +143,25 @@ $("#slider_timer").on("slide", function(slideEvt) {
     }
 
     // Update value attribute of input
-    $("#slider_timer").value(slideEvt.value);
+    $("#slider_timer").attr('value', slideEvt.value);
 });
 
+/****************** GM ******************/
+
+$('#slider_gm').slider({
+    formatter: function(value) {
+        return Math.floor(value / 2.55) + '%';
+    }
+});
+
+$("#slider_gm").on("slide", function(slideEvt) {
+
+    has_user_updated_sliders = true;
+    
+    // Update value
+    $("#slider_gm_value").text(Math.floor(slideEvt.value / 2.55));
+    $("#slider_gm").attr('value', slideEvt.value);
+});
 
 /***************  SLIDERS ***************/
 

@@ -33,6 +33,7 @@ body {
 
 #header_title,
 #command,
+#gm,
 .channel {
     border-radius: 10px;
     border: dimgrey solid 3px;
@@ -72,22 +73,29 @@ body {
 #fire_transition {
 }
 
-#timer {
+#timer,
+#gm {
     padding-left: 10px;
     padding-right: 10px;
 }
 
-#slider_timer_msg {
-    padding-left: 10px;
+#slider_timer_msg,
+#slider_gm_msg {
+    padding-left: 20px;
     display: inline-block;
 }
 
-#timer .slider {
+#timer .slider,
+#gm .slider {
     width: 70%;
 }
 
 #timer .slider-selection {
     background: #BABABA;
+}
+
+#gm .slider-selection {
+    background: #FF8400;
 }
 
 /*** SLIDERS ***/

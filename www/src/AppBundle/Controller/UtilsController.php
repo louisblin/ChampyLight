@@ -218,6 +218,15 @@ class UtilsController extends Controller
             $error_msg .= 'slider_timer not defined in POST...';
         }
 
+        // Grand Master
+        if (isset($_POST['gm'])) {
+            DataQueries::setGMValue(htmlspecialchars($_POST['gm']));
+        }
+        else {
+            $success = false;
+            $error_msg .= 'gm not defined in POST...';
+        }
+
         // Patch intensities
         if (isset($_POST['channel_intensity'])) {
 

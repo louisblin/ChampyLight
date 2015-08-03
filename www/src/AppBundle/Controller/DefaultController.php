@@ -29,10 +29,12 @@ class DefaultController extends Controller
     public function controlAction()
     {
         $channels = DefaultController::createPatchTable();
+        $gm = DataQueries::getGMValue();
 
         return $this->render(
             'default/control.html.twig', 
-            array('channels' => $channels)
+            array('channels' => $channels,
+                  'gm' => $gm)
         );
     }
     

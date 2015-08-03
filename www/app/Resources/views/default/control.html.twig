@@ -12,19 +12,19 @@
         <h1 class="col-xs-12" id="header_title">ChampyLight Controller</h1>
     </div>
 
+    <!-- COMMAND BLOCK to fire transiitons and set timer -->
     <form action="submit_values" method="POST">
-        <!-- Command block to fire transiitons and set timer -->
         <div class="row" id="command">
                 
             <!-- Fire transition -->
-            <div class="col-sm-3 col-xs-12" id="fire_transition">
+            <div class="col-lg-3 col-sm-6 col-xs-12" id="fire_transition">
                 <button type="submit" class="btn btn-default btn-lg">
                       <span class="glyphicon glyphicon-play" aria-hidden="true"> Fire transition</span>
                   </button>
             </div>
             
             <!-- Transition type -->
-            <div class="col-sm-3 col-xs-12" id="fire_transition">
+            <div class="col-lg-3 col-sm-6 col-xs-12" id="fire_transition">
                 <input type="hidden" id="transition_type" name="transition_type" value="linear">
 
                 <!-- Split button -->
@@ -44,7 +44,7 @@
             </div>
             
             <!-- Timer -->
-            <div class="col-sm-6 col-xs-12" id="timer">
+            <div class="col-lg-6 col-sm-12 col-xs-12" id="timer">
                 <input id="slider_timer" 
                        type="text"
                        name="slider_timer"
@@ -56,8 +56,27 @@
                            <i class="fa fa-clock-o">  <span id="slider_timer_value">5</span>''</i>
                        </span>
             </div>
-
         </div>
+
+        <!-- GRAND MASTER -->
+        <div class="row" id="gm">
+            <div class="col-xs-12">
+                <input type="text" 
+                       class="span2" 
+                       name="gm" 
+                       value="{{ gm }}" 
+                       data-slider-min="0" 
+                       data-slider-max="255" 
+                       data-slider-step="1" 
+                       data-slider-value="{{ gm }}" 
+                       id="slider_gm" 
+                       data-slider-handle="round" />
+                       <span id="slider_gm_msg"> 
+                           <i class="fa fa-power-off">  <span id="slider_gm_value">{{ gm }}</span></i>
+                       </span>
+            </div>
+        </div>
+
         <!-- List of channels that are in the patch -->
         <div class="row">
       
