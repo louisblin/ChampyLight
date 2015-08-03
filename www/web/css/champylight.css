@@ -98,6 +98,13 @@ body {
     background: #FF8400;
 }
 
+@media screen and (max-width: 767px) {
+
+    #transition_type_block {
+        margin-top: 10px;
+    }
+}
+
 /*** SLIDERS ***/
 
 /** channel_side **/
