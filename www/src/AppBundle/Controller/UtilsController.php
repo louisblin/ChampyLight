@@ -320,43 +320,8 @@ class UtilsController extends Controller
         }
 
         // Creating answer
-        $response = 0;
-
         foreach ($intensities as $intensity) {
         
-            //echo '000';
-            //echo '005';
-
-            //echo '255';
-            //echo '000';
-            //echo '000';
-            //echo '000';
-            //
-            //echo '000';
-            //echo '255';
-            //echo '000';
-            //echo '000';
-
-            //echo '000';
-            //echo '000';
-            //echo '255';
-            //echo '000';
-            //
-            //echo '255';
-            //echo '255';
-            //echo '000';
-            //echo '000';
-            //
-            //echo '255';
-            //echo '000';
-            //echo '255';
-            //echo '000';
-            //
-            //echo '000';
-            //echo '255';
-            //echo '255';
-            //echo '000';
-
             if ($intensity < 10) {
                 echo "00" . $intensity;
             }
@@ -368,6 +333,6 @@ class UtilsController extends Controller
             } 
         }
         
-        return new Response($response);
+        return new Response('');
     }
 }

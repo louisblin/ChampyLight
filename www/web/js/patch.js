@@ -102,17 +102,28 @@ $('.add_input_btn')
     });
 
 // Toggle selected spotlight type.
-$('.spot_type')
-    .on("change", function() {
-    
-        console.log('Updated');
-       
-        var off = $(this).find("input[value^='off']")[0];
-        var on = $(this).find("input[value^='on']")[0];
+//$('.spot_type')
+//    .on("change", function() {
+//    
+//        console.log('Updated');
+//       
+//        var off = $(this).find("input[value^='off']")[0];
+//        var on = $(this).find("input[value^='on']")[0];
+//
+//        $(off).attr("value", "on");
+//        $(on).attr("value", "off");
+//    });
 
-        $(off).attr("value", "on");
-        $(on).attr("value", "off");
-    });
+function updateSpotlightType() {
+
+    var r=confirm('Are you sure you want to delete??');
+
+    // Switch to on all active inputs
+    $('.spot_type input').attr('value', 'off');
+    $('.spot_type .active input').attr('value', 'on');
+
+    return true;
+}
 
 /******* PATCH/CONTROL buttons ********/
 
