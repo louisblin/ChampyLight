@@ -116,8 +116,6 @@ $('.add_input_btn')
 
 function updateSpotlightType() {
 
-    var r=confirm('Are you sure you want to delete??');
-
     // Switch to on all active inputs
     $('.spot_type input').attr('value', 'off');
     $('.spot_type .active input').attr('value', 'on');
