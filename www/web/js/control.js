@@ -37,7 +37,8 @@ function init_sliders() {
                 return Math.floor(value / 2.55) + '%';
             },
             
-            reversed : true
+            reversed : true,
+            tooltip : "hide"
         });
 }
 
