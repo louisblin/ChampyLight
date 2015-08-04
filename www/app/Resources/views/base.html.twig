@@ -55,6 +55,8 @@
 
         {% block flashMsg %}
 
+        <div id="flash_messages">
+        
             {% for flashMessage in app.session.flashbag.get('success') %}
             <div class="alert alert-success alert-dismissible fade in" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -72,6 +74,8 @@
                 <strong>Snap!</strong> {{ flashMessage }}
             </div>
             {% endfor %}
+
+        </div>
 
         {% endblock %}
         

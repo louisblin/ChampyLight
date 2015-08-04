@@ -31,10 +31,20 @@ class DefaultController extends Controller
         $channels = DefaultController::createPatchTable();
         $gm = DataQueries::getGMValue();
 
+        $timeInt = DataQueries::getTIsinceLastRenderQuery();
+        if ($timeInt < 2.0) {
+            $isOnline = true;
+        }
+        else {
+            $isOnline = false;
+        }
+        
+        
         return $this->render(
             'default/control.html.twig', 
             array('channels' => $channels,
-                  'gm' => $gm)
+                  'gm' => $gm,
+                  'isOnline' => $isOnline)
         );
     }
     

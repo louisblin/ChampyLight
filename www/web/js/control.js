@@ -101,7 +101,7 @@ window.onload = function() {
     // Close success flash message
     setTimeout(function () {
     
-        $('.alert-success').alert('close');
+        $('#flash_messages .alert-success').alert('close');
     
     }, 2000);
     

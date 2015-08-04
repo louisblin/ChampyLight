@@ -26,6 +26,7 @@ use AppBundle\Model\ErrorsHandling;
  * - getOverallIntensityForDMX($dmx);
  * - getChannelForDMX($dmx);
  * - getAllChannels();
+ * - getTIsinceLastRenderQuery();
  *
  * Setters for channel and dmx intensity
  * - setTransitionType($trans_id);
@@ -33,6 +34,7 @@ use AppBundle\Model\ErrorsHandling;
  * - setGMValue($gm);
  * - setIntensityForDMX($dmx, $newIntensity);
  * - setIntensityForChannel($channel, $newIntensity);
+ * - setLastRenderQueryToNow();
  *
  * Creating / Deleting dmx assignments
  * - assignChannelToDMX($dmx, $newChannel, $intensity, $type);
@@ -301,6 +303,37 @@ class DataQueries {
         return $q->fetchAll();
     }
 
+    public static function getTIsinceLastRenderQuery() {
+
+        require_once 'DbConnection.php';
+        
+        global $db, $dbName, $meta; 
+        
+        $sql = "SELECT NOW() - last_render_query as ti"
+             . " FROM " . $dbName . "." . $meta
+             . " WHERE 1";
+    
+        $q = $db->prepare($sql);
+        
+        try {
+            $q->execute();
+        } catch (\PDOException $e) {
+
+            ErrorsHandling::reportPDOError($e);
+            return -1;
+        }
+
+        $ans = $q->fetch();
+        $q->closeCursor();
+
+        ErrorsHandling::reportPDOError(NULL);
+        if ($q->rowCount() == 0) {
+            return -1;
+        }
+
+        return (int) $ans['ti'];
+    }
+
     // SETTERS
 
 
@@ -430,6 +463,31 @@ class DataQueries {
         ErrorsHandling::reportPDOError(NULL);
         return true;
     }
+
+    public static function setLastRenderQueryToNow() {
+    
+        require_once 'DbConnection.php';
+        
+        global $db, $dbName, $meta;
+        
+        $sql = "UPDATE " . $dbName . "." . $meta
+            . " SET last_render_query=NOW()"
+            . " WHERE 1"; 
+    
+        $q = $db->prepare($sql);
+        
+        try {
+            $q->execute();
+        } catch (\PDOException $e) {
+            
+            ErrorsHandling::reportPDOError($e);        
+            return false;
+        }
+        
+        ErrorsHandling::reportPDOError(NULL);
+        return true;
+    }
+    
 
 
     // CREATE / DELETE patch

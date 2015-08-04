@@ -308,6 +308,9 @@ class UtilsController extends Controller
      */
     public function renderAction()
     {
+        // Register action in database
+        DataQueries::setLastRenderQueryToNow();
+
         $intensities = array();
 
         // Meta
