@@ -32,7 +32,7 @@ class DefaultController extends Controller
         $gm = DataQueries::getGMValue();
 
         $timeInt = DataQueries::getTIsinceLastRenderQuery();
-        if ($timeInt < 2.0) {
+        if ($timeInt < 60.0) {
             $isOnline = true;
         }
         else {

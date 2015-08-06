@@ -99,6 +99,7 @@ int main() {
     
     if ( !success ) {
         printf ( "%s: Error initializing USB interface\n" , ProgName );
+        (*exitAddr)++;
         return ( -1 );
     }
     
@@ -108,6 +109,7 @@ int main() {
     
     if ( !success  ) {
         printf ( "%s: Error initializing shared memory\n" , ProgName );
+        (*exitAddr)++;
         return ( -2 );
     }
     

@@ -30,8 +30,8 @@
 #define STROBE_PERIOD   100   // Length of a period of the strobe  (MILLIS)
 
 // Utils
-#define VERBOSE
-#define DEBUG
+//#define VERBOSE
+//#define DEBUG
 
 #define SLOT_TO_SHOW    512
 #define MEM_PER_LINE    4     // Number of consecutive mem slots per line 
