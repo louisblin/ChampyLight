@@ -338,4 +338,12 @@ class UtilsController extends Controller
         
         return new Response('');
     }
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logoutAction()
+    {
+        return new Response('Logged out! Redirecting...');
+    }
 }
