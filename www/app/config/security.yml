@@ -2,12 +2,36 @@ security:
 
     providers:
         in_memory:
-            memory: ~
+            memory:
+                users:
+                    demo:
+                        password: demo
+                        roles: 'ROLE_DEMO'
+                    admin:
+                        password: swagisthemotto
+                        roles: 'ROLE_ADMIN'
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_DEMO
+             
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
             security: false
 
+        # default:
         main:
             anonymous: ~
+            http_basic: ~
+
+    access_control:
+            # public access to ^/render
+            # require ROLE_DEMO to view web interface
+            # require ROLE_ADMIN to persist changes in database
+            - { path: ^/patch, roles: ROLE_DEMO }
+            - { path: ^/control, roles: ROLE_DEMO }
+            - { path: ^/add_patch, roles: ROLE_ADMIN }
+            - { path: ^/delete_patch, roles: ROLE_ADMIN }
+            - { path: ^/submit_values, roles: ROLE_ADMIN }
