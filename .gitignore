@@ -14,8 +14,8 @@ Champylight/src/champylight
 
 #ignore executables
 *.bin
-values_handler/bin/*
-deamon/bin/*
+values_handler/bin/champylight
+deamon/bin/dmxd.bin
 
 #ignore other junk files
 *.backup
