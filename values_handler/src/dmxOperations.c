@@ -114,7 +114,6 @@ void executeRegular(dmx_exec_t *in,
     uint8_t *currValues =  arrcp(startValues, CH_COUNT);
 
     // Computing diff (end - start)
-    printf("diffValues: ");
     for (int i = 0; i < CH_COUNT; i++) {
         diffValues[i] = ((int16_t) endValues[i]) - ((int16_t) startValues[i]);
     }

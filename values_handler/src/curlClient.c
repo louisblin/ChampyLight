@@ -67,6 +67,7 @@ bool getWebValues(uint8_t *values) {
 bool parseAndStoreFile(uint8_t *values) {
 
     bool isNew = false;
+    uint8_t *values_copy = arrcp(values, CH_COUNT);
 
     FILE *fp = NULL;
     if ((fp = fopen(TCP_OUT, "r")) == NULL) {
@@ -92,26 +93,35 @@ bool parseAndStoreFile(uint8_t *values) {
         
         // Ignore numbers out of range
         if (intNb < 0 || intNb > DEPTH) {
-            fprintf(stderr, "parseAndStoreFile: Number format of %d\n", intNb);
-            continue;
+            fprintf(stderr, "parseAndStoreFile: Number format of %d. \
+                    Ignoring this stream...\n", intNb);
+            goto finally;
         }
 
         // Is this value new?
         uint8_t currValue = atoi(buffer);
-        if (values[count] != currValue) { // Value is new
+        if (values_copy[count] != currValue) { // Value is new
             isNew = true;
         }
 
-        values[count++] = (uint8_t) atoi(buffer);
+        values_copy[count++] = (uint8_t) atoi(buffer);
     }
+
+    // Replace values by values_copy
+    dmxSetValues(0, CH_COUNT, values_copy);
+
     #ifdef VERBOSE
     printf("\nTOTAL READ : %d\n\n", count);
     printSHMState();
     #endif
 
+    goto finally;
+
     // TODO: Log of errors with further error handling in file rw... 
 
+finally:
     fclose(fp);
+    free(values_copy);
 
     return isNew;
 }
