@@ -309,7 +309,7 @@ class DataQueries {
         
         global $db, $dbName, $meta; 
         
-        $sql = "SELECT NOW() - last_render_query as ti"
+        $sql = "SELECT TIMESTAMPDIFF(SECOND, meta.last_render_query, NOW()) as ti"
              . " FROM " . $dbName . "." . $meta
              . " WHERE 1";
     
