@@ -91,7 +91,7 @@ bool parseAndStoreFile(uint8_t *values) {
             break;
         }
         
-        // Ignore numbers out of range
+        // TODO
         if (intNb < 0 || intNb > DEPTH) {
             fprintf(stderr, "parseAndStoreFile: Number format of %d. \
                     Ignoring this stream...\n", intNb);
