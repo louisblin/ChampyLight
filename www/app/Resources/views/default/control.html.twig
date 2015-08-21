@@ -15,9 +15,9 @@
                    col-lg-offset-2 col-lg-8" id="header_title">ChampyLight Controller</h1>
         <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2" id="RPI_status">
             {% if isOnline %}
-            <span class="glyphicon glyphicon-ok alert alert-success" aria-hidden="true"> RPI online</span>
+            <span class="glyphicon glyphicon-ok alert alert-success" aria-hidden="true"> RPI online ({{ ti_last }}s)</span>
             {% else %}
-            <span class="glyphicon glyphicon-remove alert alert-danger" aria-hidden="true"> RPI offline</span>
+            <span class="glyphicon glyphicon-remove alert alert-danger" aria-hidden="true"> RPI offline ({{ ti_last }}s)</span>
             {% endif %}
         </div>
     </div>

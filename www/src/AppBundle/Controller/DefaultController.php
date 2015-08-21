@@ -44,7 +44,8 @@ class DefaultController extends Controller
             'default/control.html.twig', 
             array('channels' => $channels,
                   'gm' => $gm,
-                  'isOnline' => $isOnline)
+                  'isOnline' => $isOnline,
+                  'ti_last' => $timeInt)
         );
     }
     
