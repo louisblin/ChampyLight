@@ -36,7 +36,7 @@ int dmxOpen(uint8_t **shmValues) {
 
     if (shmid == -1) {
         printf("error[%d] - is dmxd running?\n", errno);
-        return errno;
+        return -1;
     }
 
     shm = (uint8_t*) shmat (shmid, NULL, 0);
