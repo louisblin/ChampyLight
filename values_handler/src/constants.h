@@ -20,6 +20,7 @@
 // Curl
 #define TIMEOUT         2
 #define REMOTE_ADDR     "champylight.estivales-puisaye.com/web/render" 
+//#define REMOTE_ADDR     "http://localhost:8000/render"
 #define TCP_OUT         "curl_output.txt"
 
 // Dmx operations
