@@ -289,7 +289,7 @@ int sendDMX ()
     success = writeUSB ( data , 8 );
     
     if ( !success ) {
-        printf ( "%s: Error sending DMX bulk packet\n" , ProgName );
+        printf ( "%s: Error sending DMX end packet\n" , ProgName );
         return ( 0 );
     }
     
@@ -431,8 +431,25 @@ int writeUSB ( ubyte *data , int numBytes )
     
     if ( nSent != numBytes ) {
         
-        printf ( "Error writing [%d] bytes [%d]\n" , numBytes , nSent );
-        return ( 0 );
+        printf ( "Error writing %d bytes: \n" , numBytes);
+        int b;
+        for ( b = 0; b < numBytes; b++ ) {
+            printf ( "[%d]" , data[b] );
+        }
+        printf ( "\n[%d] bytes written\n", nSent );
+
+        // Trying another time
+        
+        nSent = usb_interrupt_write (udev, 1, (char *) data, numBytes, 200);
+
+        printf("Trying another time... ");
+        if (nSent != numBytes) {
+            printf("FAILED [%d]", nSent);
+            return ( 0 );
+        }
+        else {
+            printf("OK!");
+        }
     }
     
     return ( 1 );
