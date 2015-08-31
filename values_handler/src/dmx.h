@@ -1,19 +1,24 @@
-// ==========================================================================
-// Velleman K8062 DMX controller library for VM116/K8062
-// ==========================================================================
+/**
+ * @file dmx.h
+ * @author Louis Blin
+ * NB: based on Velleman K8062 DMX controller library for VM116/K8062 used in
+ * the DMXWheel project - www.dmxwheel.com
+ * @date June 2015
+ *
+ * @brief Header file for dmx.c.
+ */
 
 #include "constants.h"
 
 #ifndef DMX_H
 #define DMX_H
 
-int     dmxOpen             (uint8_t **shmValues);
-void    dmxClose            ();
-void    dmxSetValue         (uint8_t channel, uint8_t value);
-void    dmxSetValues        (unsigned int fromCh, int count, uint8_t values[]);
-bool    isRunning           ();
+int   dmxOpen              (uint8_t **shmValues);
+void  dmxClose             ();
+void  dmxSetValues         (unsigned int fromCh, int count, uint8_t values[]);
+bool  isRunning            ();
 
-void    printSHMState       ();
-void    switch_to_idle_state();
+void  printSHMState        ();
+void  switch_to_idle_state ();
 
 #endif

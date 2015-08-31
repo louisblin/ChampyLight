@@ -1,5 +1,10 @@
 /**
- *  utils.c - Helper functions for printing debugging purposes
+ * @file utils.c
+ * @author Louis Blin
+ * @date June 2015
+ *
+ * @brief  Helper functions for printing debugging purposes, and other low
+ * level tools.
  */
 
 #include <stdio.h>
@@ -16,7 +21,11 @@
 #include "utils.h"
 
 /**
- *  Prints the state of the shared memory to stdout in a readable way.
+ * @brief SHM dump.
+ *
+ * Prints the state of the shared memory to stdout in a readable way.
+ *
+ * @param values holds the values to be displayed.
  */
 void printSHM(uint8_t values[]) {
 
@@ -39,8 +48,14 @@ void printSHM(uint8_t values[]) {
 }
 
 /**
+ *  @brief Array duplication.
+ *
  *  Copies the first `length` elements of `src` array in a new array and return
  *  a pointer to this array.
+ *
+ *  @param src the source array.
+ *  @param length the number of bytes to copy from the source array.
+ *  @return Returns a pointer to an array on the heap containing the copied values.
  */
 uint8_t* arrcp(uint8_t const *src, size_t length) {
 
@@ -50,7 +65,11 @@ uint8_t* arrcp(uint8_t const *src, size_t length) {
 }
 
 /** 
+ *  @brief Pauses the thread.
+ *
  *  Pauses the execution for `millis` ms.
+ *
+ *  @param millis number of milliseconds during which the system has to sleep.
  */
 void sleep_ms (int millis) {
 
@@ -66,5 +85,26 @@ void sleep_ms (int millis) {
 #else
     usleep(millis * 1000);
 #endif
+}
+
+/**
+ * @brief Idle state switcher.
+ *
+ * Leaves the program in an idle state, defined by all the spotlights beeing 
+ * set to their maximum intensity (better than a blackout, or some unexpected 
+ * state). 
+ */
+void switch_to_idle(uint8_t *values) {
+
+    // Sets the spotlights to full power (better than a blackout...)
+    fprintf(stderr, "+====================================================\n");
+    fprintf(stderr, "| Switching %d channels to idle state with value %d.\n", 
+                        CH_COUNT, DEPTH);
+    fprintf(stderr, "+====================================================\n");
+    
+    memset(values, DEPTH, CH_COUNT);
+
+    fprintf(stderr, "\nPrinting SHM final state...\n");
+    printSHMState();
 }
 

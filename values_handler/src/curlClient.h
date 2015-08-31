@@ -1,3 +1,11 @@
+/**
+ * @file curlClient.h
+ * @author Louis Blin
+ * @date June 2015
+ *
+ * @brief Header for curlClient.c.
+ */
+
 #ifndef CURLCLIENT_H
 #define CURLCLIENT_H
 

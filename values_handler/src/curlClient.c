@@ -19,10 +19,10 @@
 #include "dmx.h"
 
 /**
- * @brief Fetches the values from the web, and run consistency checks
+ * @brief Fetches the values from the web, and run consistency checks.
  *
- * @Param values an array containing the last values fetched. 
- * @Return Returns `true` if fetched values are new, false otherwise or if an
+ * @param values an array containing the last values fetched. 
+ * @return Returns `true` if fetched values are new, false otherwise or if an
  * error occured.
  */
 bool getWebValues(uint8_t *values) {
@@ -36,10 +36,12 @@ bool getWebValues(uint8_t *values) {
 }
 
 /**
- * @brief Fetches the values stored on the web interface at `REMOTE_ADDR` with
- * libcurl cURL requests, and stores them into a temporary output file.
+ * @brief Fetches values from the web.
+ *
+ * Fetches the values stored on the web interface at `REMOTE_ADDR` with libcurl 
+ * cURL requests, and stores them into a temporary output file.
  * 
- * @Return Returns `false` if an error occured.
+ * @return Returns `false` if an error occured.
  */
 bool fetchValues() {
     
@@ -91,8 +93,8 @@ bool fetchValues() {
  * If writing to file fails, or if some values are out of range, an exception
  * is raised on stderr.
  *
- * @Param values an array containing the values just fetched. 
- * @Return Returns `true` on success and if values are new, `false` otherwise.
+ * @param values an array containing the values just fetched. 
+ * @return Returns `true` on success and if values are new, `false` otherwise.
  */
 bool parseAndStoreFile(uint8_t *values) {
 

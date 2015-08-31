@@ -1,3 +1,11 @@
+/**
+ * @file dmxOperations.c
+ * @author Louis Blin
+ * @date June 2015
+ *
+ * @brief Handles the transitions between two states of the spotlights.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -16,9 +24,15 @@ inline static double cres(const double t);
 inline static double decr(const double t);
 
 /**
- *  Decode the fetched values and creates a `dmx_exec_t` structure that represents
- *  a transition. This object is then returns to the caller.`
- *  If the transition fade time interval is out of range, it is set to 1.
+ * @brief Decodes the fetched web values.
+ *
+ * Decode the fetched values and creates a `dmx_exec_t` structure that 
+ * represents the transition from the current state to the one described by 
+ * the fetched values. 
+ * NB: If the transition fade time interval is out of range, it is set to 1.
+ *
+ * @param values the fetched web values.
+ * @return Returns the `dmx_exec_t` struct object describing the transition.
  */
 dmx_exec_t* decodeDMX(uint8_t values[]) {
 
@@ -43,10 +57,14 @@ dmx_exec_t* decodeDMX(uint8_t values[]) {
 }
 
 /**
- *  Execute the transition, given the transition structure `in` and the current
- *  values of the spotlights before the transition start `startValues`.
+ * @brief Runs the fetched and decoded transtion.
+ *
+ * Execute the transition from the current spotlights state to the new one.
+ *
+ * @param startValues the current spotlight state.
+ * @param in the structure representing the transition to run.
  */
-void executeDMX(dmx_exec_t *in, uint8_t startValues[]) {
+void executeDMX(uint8_t startValues[], dmx_exec_t *in) {
 
     if (in == NULL) {
         fprintf(stderr, "\n\ndmx_exec_t pointer was null... abording.\n");
@@ -66,7 +84,6 @@ void executeDMX(dmx_exec_t *in, uint8_t startValues[]) {
         case DRES:
             executeRegular(in, startValuesCopy, &decr);
             break;
-        //case CRES_DECRES:
 
         case STROBE:
             executeStrobe(in, startValuesCopy);
@@ -81,23 +98,18 @@ void executeDMX(dmx_exec_t *in, uint8_t startValues[]) {
     free(in);
 }
 
-// Helper function: type related execution
-
-inline static double lin(const double t) {
-    return t;
-}
-
-inline static double cres(const double t) {
-    return round(pow(t, CRES_EXP));
-}
-
-inline static double decr(const double t) {
-    return round(pow(t, DECR_EXP));
-}
+////////////////////////////////////////////////////////////////////////////
+// Regular transitions,                                                   //
+//   i.e. with a transition speed that a functions can represent.         //
+////////////////////////////////////////////////////////////////////////////
 
 /**
- *  Execute a regular transition (i.e. with a transition speed that a function
- *  can represent).
+ *  @brief Runs a regular transition.
+ *
+ *  @param in the structure reprensenting the transition
+ *  @param startValues the current state of the spotlights.
+ *  @param coef_func the a pointer to the function describing the speed at
+ *  which the transtion is done.
  */
 void executeRegular(dmx_exec_t *in, 
                     uint8_t startValues[],
@@ -142,16 +154,20 @@ void executeRegular(dmx_exec_t *in,
     free(currValues);
 }
 
-/**
- * Executes a speical type of transition, a `special effect` that don't have any
- * similarity as regular transition have.
- */
+////////////////////////////////
+// Special effect transitions // 
+////////////////////////////////
 
 /**
- * Executes a strobe effect: flashes the received values during in->fade_ti 
- * seconds, and at a fixed frequency of 1000/STROBE_PERIOD (NB: STROBE_PERIOD
- * is in millis).
- * At the end of the effect, the original values are restored.
+ * @brief Executes a strobe effect transtion.
+ *
+ * It flashes the received values and restores the original values at the end 
+ * of the effect.
+ *
+ * @param in the structure reprenting the transition: effet last `in->fade_ti` 
+ * seconds, and flashes at a fixed frequency of 1000/STROBE_PERIOD 
+ * (NB: STROBE_PERIOD is in millis).
+ * @param startValues the initial values, that will be restored at the end.
  */
 void executeStrobe(dmx_exec_t *in, uint8_t startValues[]) {
 
@@ -192,8 +208,27 @@ void executeStrobe(dmx_exec_t *in, uint8_t startValues[]) {
     free(blackValues);
 }
 
+//////////////////////
+// Helper functions //
+//////////////////////
+
+// Helper function easing the regular transitions.
+inline static double lin(const double t) {
+    return t;
+}
+
+inline static double cres(const double t) {
+    return round(pow(t, CRES_EXP));
+}
+
+inline static double decr(const double t) {
+    return round(pow(t, DECR_EXP));
+}
+
 /**
- *  Returns the current time and stores it in t0.
+ *  @brief Starts the timer.
+ *
+ *  @param t0 a pointer that is assigned to the timer. 
  */
 void startTime(struct timeval *t0) {
         
@@ -202,8 +237,14 @@ void startTime(struct timeval *t0) {
 }
 
 /**
- *  Updates the transition time, i.e. wait the right number of seconds between
- *  the next transition cycle.
+ *  @brief Handles updates between transition steps.
+ *
+ *  Pauses the current thread until the next transition step, and stops the 
+ *  timer.
+ *
+ *  @param t0 the timer since the beginning of the cycle.
+ *  @param t1 the timer at the end of the cycle.
+ *  @param sleepTime the time during which the thread must be paused.
  */
 int updateTime(struct timeval *t0, struct timeval *t1, 
                                          unsigned int sleepTime) {

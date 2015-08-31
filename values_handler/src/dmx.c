@@ -1,8 +1,12 @@
-// ==========================================================================
-// Velleman K8062 DMX controller library for VM116/K8062
-//
-// Original code from www.dmxwheel.com
-// ==========================================================================
+/**
+ * @file dmx.c
+ * @author Louis Blin
+ * NB: based on Velleman K8062 DMX controller library for VM116/K8062 used in
+ * the DMXWheel project - www.dmxwheel.com
+ * @date June 2015
+ *
+ * @brief Handles the connection with the deamon program dmxd.
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,16 +22,25 @@
 #include "utils.h"
 #include "dmx.h"
 
-uint16_t *maxChanAddr;    // control register for # of channels to update
-uint8_t  *exitAddr;       // control register to exit deamon
-uint8_t  *chanData;       // 512 byte array of channel data
+/** Control register for # of channels to update. */
+uint16_t *maxChanAddr;    
+/** Control register to exit deamon. */
+uint8_t  *exitAddr;       
+/** 512 byte array of channel data. */
+uint8_t  *chanData;       
 
-uint8_t  *shm;            // shared memory segment containing data & ctrl regs
-int      shmid = -1;      // handel to shared memory segment
+/** Shared memory segment containing data & ctrl regs. */
+uint8_t  *shm;            
+/** Handle to shared memory segment. */
+int      shmid = -1;      
 
 /**
+ *  @brief Initialise the connection with the deamon.
+ *
  *  Opens the dmx shared memory segment with the deamon dmxd.c.
- *  Returns a non zero value if something went wrong.
+ *  
+ *  @param shmValues a pointer to be assigned to the first values in the SHM.
+ *  @return Returns a negative value if something went wrong.
  */
 int dmxOpen(uint8_t **shmValues) {
 
@@ -66,7 +79,9 @@ int dmxOpen(uint8_t **shmValues) {
 }
 
 /**
- *  Closes the dmx shared memory segment.
+ *  @brief End connection.
+ *
+ *  Detaches from shared memory segment, and frees any variable still allocated.
  */
 void dmxClose() {
     if (shmid != -1) {
@@ -79,15 +94,14 @@ void dmxClose() {
 }
 
 /**
- *  Sets the value of `channel` with the value `data`.
- */
-void dmxSetValue(uint8_t channel, uint8_t data) {
-    chanData[channel] = data;
-}
-
-/**
+ *  @brief Updates values in SHM. 
+ *
  *  Sets a continuous block of `count` channels starting at `fromCh` with the
  *  values `values[]`.
+ *
+ *  @param fromCh the index of the first value to update.
+ *  @param count the number of channels to update.
+ *  @param values the array of new values.
  */
 void dmxSetValues(unsigned int fromCh, int count, uint8_t values[]) {
     
@@ -98,8 +112,10 @@ void dmxSetValues(unsigned int fromCh, int count, uint8_t values[]) {
 }
 
 /**
- * Return a boolean value defining if the deamon stopped, and weither this
- * program should stop too.
+ * @brief Checks if the deamon is running. 
+ *
+ * @return Returns true if the control register of the SHM indicates that the 
+ * deamon is running. False otherwise.
  */
 bool isRunning() {
     
@@ -107,6 +123,8 @@ bool isRunning() {
 }
 
 /**
+ *  @brief SHM dump helper.
+ *
  *  Prints the shared memory using the util.c function printSHM().
  */
 void printSHMState() {
@@ -114,20 +132,11 @@ void printSHMState() {
 }
 
 /** 
+ *  @brief Idle state switcher helper.
+ *
  *  Called if the program has to close after an unexpected error occured.
  */
 void switch_to_idle_state() {
-
-    // Sets the spotlights to full power (better than a blackout...)
-    fprintf(stderr, "+====================================================\n");
-    fprintf(stderr, "| Switching %d channels to idle state with value %d.\n", 
-                        CH_COUNT, DEPTH);
-    fprintf(stderr, "+====================================================\n");
-    
-    memset((chanData), DEPTH, CH_COUNT);
-
-    fprintf(stderr, "\nPrinting SHM final state...\n");
-    printSHMState();
+    switch_to_idle(chanData);
 }
-
 

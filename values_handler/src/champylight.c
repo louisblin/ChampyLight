@@ -30,6 +30,8 @@
 #include "champylight.h"
 
 /**
+ *  @brief Entry point of the values handler.
+ *
  *  Aim of the main function:
  *  - init the dmx connection on start.
  *  - run fetch-decode-execute cycles in order to update the DMX values. NB: if
@@ -37,7 +39,7 @@
  *    of the cycle is dropped.
  *  - closes the dmx connection on exit.
  */
-int main( int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
 
     uint8_t *webValues = calloc(WEB_SIZE, sizeof(uint8_t));
     uint8_t *shmValues = NULL;
@@ -53,7 +55,7 @@ int main( int argc, char *argv[]) {
 
         if (areNewValues) {
             dmx_exec_t *exec = decodeDMX(webValues);
-            executeDMX(exec, shmValues);
+            executeDMX(shmValues, exec);
         }
 
         // Suspend before next update
@@ -72,9 +74,9 @@ int main( int argc, char *argv[]) {
  *  The connection uses he shared memory segment which is to communicates with
  *  the deamon program that continuously sends the values to the spotlights.
  *
- *  @Param shmValues a pointer to the array of values in the shared memory
+ *  @param shmValues a pointer to the array of values in the shared memory
  *  segment.
- *  @Return Returns 0 on success, a negative value on failure.
+ *  @return Returns 0 on success, a negative value on failure.
  */
 int initDMX(uint8_t **shmValues) {
 
@@ -88,6 +90,8 @@ int initDMX(uint8_t **shmValues) {
 
 /**
  *  @brief Closes the DMX connection and frees any variable on the heap.
+ *
+ *  @param webValues the array containing the last fetched values.
  */
 void exitDMX(uint8_t *webValues) {
 

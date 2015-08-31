@@ -1,3 +1,11 @@
+/**
+ * @file champylight.h
+ * @author Louis Blin
+ * @date June 2015
+ *
+ * @brief Header for champylight.c.
+ */
+
 #ifndef CHAMPYLIGHT_H
 #define CHAMPYLIGHT_H
 
