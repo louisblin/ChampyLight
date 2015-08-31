@@ -50,7 +50,7 @@ void executeDMX(dmx_exec_t *in, uint8_t startValues[]) {
 
     if (in == NULL) {
         fprintf(stderr, "\n\ndmx_exec_t pointer was null... abording.\n");
-        switch_to_idle_state(startValues);
+        switch_to_idle_state();
         exit(EXIT_FAILURE);
     }
 

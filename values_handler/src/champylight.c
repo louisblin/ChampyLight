@@ -1,20 +1,30 @@
-// ===========================================================================
-// champylight.c - a simple program that sets the color on a DMX device using
-//                 Values fetched from the web.
-//
-// Code based on DMXWHEEL project - www.dmxwheel.com.
-// ===========================================================================
+/**
+ * @file champylight.c
+ * @author Louis Blin
+ * @date June 2015
+ *
+ * @brief Main file for the values handler.
+ *
+ * This simple program runs on a device connected to the spotlights. It
+ * handles the values recovery from the web, and the runs the transitions
+ * between light states.
+ *
+ * Code using the modified version of the dmx.h library used by the
+ * DMXWHEEL project - www.dmxwheel.com.
+ *
+ * @see www.dmxwheel.com
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <string.h> 
+#include <string.h>
 #include <unistd.h>
 
 #include "constants.h"
 #include "utils.h"
-#include "dmx.h"                              // DMX interface library
+#include "dmx.h"
 #include "curlClient.h"
 #include "dmxOperations.h"
 #include "champylight.h"
@@ -22,7 +32,7 @@
 /**
  *  Aim of the main function:
  *  - init the dmx connection on start.
- *  - run fetch-decode-execute cycles in order to update the DMX values. NB: if 
+ *  - run fetch-decode-execute cycles in order to update the DMX values. NB: if
  *    fetched values are the same as on the last cycle, the decode-execute part
  *    of the cycle is dropped.
  *  - closes the dmx connection on exit.
@@ -38,9 +48,9 @@ int main( int argc, char *argv[]) {
 
     // Main program loop
     while (isRunning()) {
-   
+
         bool areNewValues = getWebValues(webValues);
-        
+
         if (areNewValues) {
             dmx_exec_t *exec = decodeDMX(webValues);
             executeDMX(exec, shmValues);
@@ -57,9 +67,14 @@ int main( int argc, char *argv[]) {
 }
 
 /**
- *  Initialises the DMX connection, i.e. the shared memory segment which is the
- *  way the program communicates with the deamon that sends the values to the
- *  spotlights.
+ *  @brief Initialises the DMX connection.
+ *
+ *  The connection uses he shared memory segment which is to communicates with
+ *  the deamon program that continuously sends the values to the spotlights.
+ *
+ *  @Param shmValues a pointer to the array of values in the shared memory
+ *  segment.
+ *  @Return Returns 0 on success, a negative value on failure.
  */
 int initDMX(uint8_t **shmValues) {
 
@@ -72,7 +87,7 @@ int initDMX(uint8_t **shmValues) {
 }
 
 /**
- *  Closes the DMX connection, and frees any variable on the heap.
+ *  @brief Closes the DMX connection and frees any variable on the heap.
  */
 void exitDMX(uint8_t *webValues) {
 

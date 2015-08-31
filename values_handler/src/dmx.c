@@ -12,6 +12,7 @@
 #include <errno.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "constants.h"
 #include "utils.h"
@@ -111,4 +112,22 @@ bool isRunning() {
 void printSHMState() {
     printSHM(shm);
 }
+
+/** 
+ *  Called if the program has to close after an unexpected error occured.
+ */
+void switch_to_idle_state() {
+
+    // Sets the spotlights to full power (better than a blackout...)
+    fprintf(stderr, "+====================================================\n");
+    fprintf(stderr, "| Switching %d channels to idle state with value %d.\n", 
+                        CH_COUNT, DEPTH);
+    fprintf(stderr, "+====================================================\n");
+    
+    memset((chanData), DEPTH, CH_COUNT);
+
+    fprintf(stderr, "\nPrinting SHM final state...\n");
+    printSHMState();
+}
+
 

@@ -7,12 +7,13 @@
 #ifndef DMX_H
 #define DMX_H
 
-int     dmxOpen           (uint8_t **shmValues);
-void    dmxClose          ();
-void    dmxSetValue       (uint8_t channel, uint8_t value);
-void    dmxSetValues      (unsigned int fromCh, int count, uint8_t values[]);
-bool    isRunning         ();
+int     dmxOpen             (uint8_t **shmValues);
+void    dmxClose            ();
+void    dmxSetValue         (uint8_t channel, uint8_t value);
+void    dmxSetValues        (unsigned int fromCh, int count, uint8_t values[]);
+bool    isRunning           ();
 
-void    printSHMState     ();
+void    printSHMState       ();
+void    switch_to_idle_state();
 
 #endif
