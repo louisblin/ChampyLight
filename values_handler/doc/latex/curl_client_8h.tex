@@ -1,0 +1,86 @@
+\hypertarget{curl_client_8h}{}\section{values\+\_\+handler/src/curl\+Client.h File Reference}
+\label{curl_client_8h}\index{values\+\_\+handler/src/curl\+Client.\+h@{values\+\_\+handler/src/curl\+Client.\+h}}
+
+
+Header for \hyperlink{curl_client_8c}{curl\+Client.\+c}.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{curl_client_8h_a9ef244ad52e13c3b5d49996a5c74ec36}{get\+Web\+Values} (uint8\+\_\+t $\ast$values)
+\begin{DoxyCompactList}\small\item\em Fetches the values from the web, and run consistency checks. \end{DoxyCompactList}\item 
+bool \hyperlink{curl_client_8h_ada762915c1adc1daef945481baedf786}{fetch\+Values} ()
+\begin{DoxyCompactList}\small\item\em Fetches values from the web. \end{DoxyCompactList}\item 
+bool \hyperlink{curl_client_8h_a9d0a369dd803c9ae89daf6b4741b26de}{parse\+And\+Store\+File} (uint8\+\_\+t $\ast$values)
+\begin{DoxyCompactList}\small\item\em Parses the fetched values from the output file, and stores them into {\ttfamily values}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Header for \hyperlink{curl_client_8c}{curl\+Client.\+c}. 
+
+\begin{DoxyAuthor}{Author}
+Louis Blin 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+June 2015 
+\end{DoxyDate}
+
+
+\subsection{Function Documentation}
+\hypertarget{curl_client_8h_ada762915c1adc1daef945481baedf786}{}\index{curl\+Client.\+h@{curl\+Client.\+h}!fetch\+Values@{fetch\+Values}}
+\index{fetch\+Values@{fetch\+Values}!curl\+Client.\+h@{curl\+Client.\+h}}
+\subsubsection[{fetch\+Values()}]{\setlength{\rightskip}{0pt plus 5cm}bool fetch\+Values (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{curl_client_8h_ada762915c1adc1daef945481baedf786}
+
+
+Fetches values from the web. 
+
+Fetches the values stored on the web interface at {\ttfamily R\+E\+M\+O\+T\+E\+\_\+\+A\+D\+D\+R} with libcurl c\+U\+R\+L requests, and stores them into a temporary output file.
+
+\begin{DoxyReturn}{Returns}
+Returns {\ttfamily false} if an error occured. 
+\end{DoxyReturn}
+\hypertarget{curl_client_8h_a9ef244ad52e13c3b5d49996a5c74ec36}{}\index{curl\+Client.\+h@{curl\+Client.\+h}!get\+Web\+Values@{get\+Web\+Values}}
+\index{get\+Web\+Values@{get\+Web\+Values}!curl\+Client.\+h@{curl\+Client.\+h}}
+\subsubsection[{get\+Web\+Values(uint8\+\_\+t $\ast$values)}]{\setlength{\rightskip}{0pt plus 5cm}bool get\+Web\+Values (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{values}
+\end{DoxyParamCaption}
+)}\label{curl_client_8h_a9ef244ad52e13c3b5d49996a5c74ec36}
+
+
+Fetches the values from the web, and run consistency checks. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em values} & an array containing the last values fetched. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\ttfamily true} if fetched values are new, false otherwise or if an error occured. 
+\end{DoxyReturn}
+\hypertarget{curl_client_8h_a9d0a369dd803c9ae89daf6b4741b26de}{}\index{curl\+Client.\+h@{curl\+Client.\+h}!parse\+And\+Store\+File@{parse\+And\+Store\+File}}
+\index{parse\+And\+Store\+File@{parse\+And\+Store\+File}!curl\+Client.\+h@{curl\+Client.\+h}}
+\subsubsection[{parse\+And\+Store\+File(uint8\+\_\+t $\ast$values)}]{\setlength{\rightskip}{0pt plus 5cm}bool parse\+And\+Store\+File (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{values}
+\end{DoxyParamCaption}
+)}\label{curl_client_8h_a9d0a369dd803c9ae89daf6b4741b26de}
+
+
+Parses the fetched values from the output file, and stores them into {\ttfamily values}. 
+
+If writing to file fails, or if some values are out of range, an exception is raised on stderr.
+
+
+\begin{DoxyParams}{Parameters}
+{\em values} & an array containing the values just fetched. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns {\ttfamily true} on success and if values are new, {\ttfamily false} otherwise. 
+\end{DoxyReturn}

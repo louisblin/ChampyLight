@@ -1,0 +1,104 @@
+\hypertarget{champylight_8c}{}\section{values\+\_\+handler/src/champylight.c File Reference}
+\label{champylight_8c}\index{values\+\_\+handler/src/champylight.\+c@{values\+\_\+handler/src/champylight.\+c}}
+
+
+Main file for the values handler.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$stdbool.\+h$>$}\\*
+{\ttfamily \#include $<$stdint.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}constants.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}utils.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}dmx.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}curl\+Client.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}dmx\+Operations.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}champylight.\+h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{champylight_8c_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Entry point of the values handler. \end{DoxyCompactList}\item 
+int \hyperlink{champylight_8c_aceeb2e12974b6bfbda49bc4a752c645f}{init\+D\+M\+X} (uint8\+\_\+t $\ast$$\ast$shm\+Values)
+\begin{DoxyCompactList}\small\item\em Initialises the D\+M\+X connection. \end{DoxyCompactList}\item 
+void \hyperlink{champylight_8c_a250631691c69d402a20ecdd9eda47d5c}{exit\+D\+M\+X} (uint8\+\_\+t $\ast$web\+Values)
+\begin{DoxyCompactList}\small\item\em Closes the D\+M\+X connection and frees any variable on the heap. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Main file for the values handler. 
+
+\begin{DoxyAuthor}{Author}
+Louis Blin 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+June 2015
+\end{DoxyDate}
+This simple program runs on a device connected to the spotlights. It handles the values recovery from the web, and the runs the transitions between light states.
+
+Code using the modified version of the \hyperlink{dmx_8h}{dmx.\+h} library used by the D\+M\+X\+W\+H\+E\+E\+L project -\/ www.\+dmxwheel.\+com.
+
+\begin{DoxySeeAlso}{See also}
+www.\+dmxwheel.\+com 
+\end{DoxySeeAlso}
+
+
+\subsection{Function Documentation}
+\hypertarget{champylight_8c_a250631691c69d402a20ecdd9eda47d5c}{}\index{champylight.\+c@{champylight.\+c}!exit\+D\+M\+X@{exit\+D\+M\+X}}
+\index{exit\+D\+M\+X@{exit\+D\+M\+X}!champylight.\+c@{champylight.\+c}}
+\subsubsection[{exit\+D\+M\+X(uint8\+\_\+t $\ast$web\+Values)}]{\setlength{\rightskip}{0pt plus 5cm}void exit\+D\+M\+X (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{web\+Values}
+\end{DoxyParamCaption}
+)}\label{champylight_8c_a250631691c69d402a20ecdd9eda47d5c}
+
+
+Closes the D\+M\+X connection and frees any variable on the heap. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em web\+Values} & the array containing the last fetched values. \\
+\hline
+\end{DoxyParams}
+\hypertarget{champylight_8c_aceeb2e12974b6bfbda49bc4a752c645f}{}\index{champylight.\+c@{champylight.\+c}!init\+D\+M\+X@{init\+D\+M\+X}}
+\index{init\+D\+M\+X@{init\+D\+M\+X}!champylight.\+c@{champylight.\+c}}
+\subsubsection[{init\+D\+M\+X(uint8\+\_\+t $\ast$$\ast$shm\+Values)}]{\setlength{\rightskip}{0pt plus 5cm}int init\+D\+M\+X (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$$\ast$}]{shm\+Values}
+\end{DoxyParamCaption}
+)}\label{champylight_8c_aceeb2e12974b6bfbda49bc4a752c645f}
+
+
+Initialises the D\+M\+X connection. 
+
+The connection uses he shared memory segment which is to communicates with the deamon program that continuously sends the values to the spotlights.
+
+
+\begin{DoxyParams}{Parameters}
+{\em shm\+Values} & a pointer to the array of values in the shared memory segment. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns 0 on success, a negative value on failure. 
+\end{DoxyReturn}
+\hypertarget{champylight_8c_a0ddf1224851353fc92bfbff6f499fa97}{}\index{champylight.\+c@{champylight.\+c}!main@{main}}
+\index{main@{main}!champylight.\+c@{champylight.\+c}}
+\subsubsection[{main(int argc, char $\ast$argv[])}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\label{champylight_8c_a0ddf1224851353fc92bfbff6f499fa97}
+
+
+Entry point of the values handler. 
+
+Aim of the main function\+:
+\begin{DoxyItemize}
+\item init the dmx connection on start.
+\item run fetch-\/decode-\/execute cycles in order to update the D\+M\+X values. N\+B\+: if fetched values are the same as on the last cycle, the decode-\/execute part of the cycle is dropped.
+\item closes the dmx connection on exit. 
+\end{DoxyItemize}

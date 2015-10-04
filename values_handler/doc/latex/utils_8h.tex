@@ -1,0 +1,104 @@
+\hypertarget{utils_8h}{}\section{values\+\_\+handler/src/utils.h File Reference}
+\label{utils_8h}\index{values\+\_\+handler/src/utils.\+h@{values\+\_\+handler/src/utils.\+h}}
+
+
+Header for \hyperlink{utils_8c}{utils.\+c}.  
+
+
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{utils_8h_a8f9bc92ab5c582c7a075b74947b32736}{print\+S\+H\+M} (uint8\+\_\+t values\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em S\+H\+M dump. \end{DoxyCompactList}\item 
+uint8\+\_\+t $\ast$ \hyperlink{utils_8h_afb13eeb7d518c71baee0bfa882676cb0}{arrcp} (uint8\+\_\+t const $\ast$src, size\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Array duplication. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8h_abcfb1b2f1409f3e12fd6a312d8bddd2b}{sleep\+\_\+ms} (int millis)
+\begin{DoxyCompactList}\small\item\em Pauses the thread. \end{DoxyCompactList}\item 
+void \hyperlink{utils_8h_a5047ff36dc864956ad182db8440901d3}{switch\+\_\+to\+\_\+idle} (uint8\+\_\+t $\ast$values)
+\begin{DoxyCompactList}\small\item\em Idle state switcher. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Header for \hyperlink{utils_8c}{utils.\+c}. 
+
+\begin{DoxyAuthor}{Author}
+Louis Blin 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+June 2015 
+\end{DoxyDate}
+
+
+\subsection{Function Documentation}
+\hypertarget{utils_8h_afb13eeb7d518c71baee0bfa882676cb0}{}\index{utils.\+h@{utils.\+h}!arrcp@{arrcp}}
+\index{arrcp@{arrcp}!utils.\+h@{utils.\+h}}
+\subsubsection[{arrcp(uint8\+\_\+t const $\ast$src, size\+\_\+t length)}]{\setlength{\rightskip}{0pt plus 5cm}uint8\+\_\+t$\ast$ arrcp (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t const $\ast$}]{src, }
+\item[{size\+\_\+t}]{length}
+\end{DoxyParamCaption}
+)}\label{utils_8h_afb13eeb7d518c71baee0bfa882676cb0}
+
+
+Array duplication. 
+
+Copies the first {\ttfamily length} elements of {\ttfamily src} array in a new array and return a pointer to this array.
+
+
+\begin{DoxyParams}{Parameters}
+{\em src} & the source array. \\
+\hline
+{\em length} & the number of bytes to copy from the source array. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns a pointer to an array on the heap containing the copied values. 
+\end{DoxyReturn}
+\hypertarget{utils_8h_a8f9bc92ab5c582c7a075b74947b32736}{}\index{utils.\+h@{utils.\+h}!print\+S\+H\+M@{print\+S\+H\+M}}
+\index{print\+S\+H\+M@{print\+S\+H\+M}!utils.\+h@{utils.\+h}}
+\subsubsection[{print\+S\+H\+M(uint8\+\_\+t values[])}]{\setlength{\rightskip}{0pt plus 5cm}void print\+S\+H\+M (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t}]{values\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\label{utils_8h_a8f9bc92ab5c582c7a075b74947b32736}
+
+
+S\+H\+M dump. 
+
+Prints the state of the shared memory to stdout in a readable way.
+
+
+\begin{DoxyParams}{Parameters}
+{\em values} & holds the values to be displayed. \\
+\hline
+\end{DoxyParams}
+\hypertarget{utils_8h_abcfb1b2f1409f3e12fd6a312d8bddd2b}{}\index{utils.\+h@{utils.\+h}!sleep\+\_\+ms@{sleep\+\_\+ms}}
+\index{sleep\+\_\+ms@{sleep\+\_\+ms}!utils.\+h@{utils.\+h}}
+\subsubsection[{sleep\+\_\+ms(int millis)}]{\setlength{\rightskip}{0pt plus 5cm}void sleep\+\_\+ms (
+\begin{DoxyParamCaption}
+\item[{int}]{millis}
+\end{DoxyParamCaption}
+)}\label{utils_8h_abcfb1b2f1409f3e12fd6a312d8bddd2b}
+
+
+Pauses the thread. 
+
+Pauses the execution for {\ttfamily millis} ms.
+
+
+\begin{DoxyParams}{Parameters}
+{\em millis} & number of milliseconds during which the system has to sleep. \\
+\hline
+\end{DoxyParams}
+\hypertarget{utils_8h_a5047ff36dc864956ad182db8440901d3}{}\index{utils.\+h@{utils.\+h}!switch\+\_\+to\+\_\+idle@{switch\+\_\+to\+\_\+idle}}
+\index{switch\+\_\+to\+\_\+idle@{switch\+\_\+to\+\_\+idle}!utils.\+h@{utils.\+h}}
+\subsubsection[{switch\+\_\+to\+\_\+idle(uint8\+\_\+t $\ast$values)}]{\setlength{\rightskip}{0pt plus 5cm}void switch\+\_\+to\+\_\+idle (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t $\ast$}]{values}
+\end{DoxyParamCaption}
+)}\label{utils_8h_a5047ff36dc864956ad182db8440901d3}
+
+
+Idle state switcher. 
+
+Leaves the program in an idle state, defined by all the spotlights beeing set to their maximum intensity (better than a blackout, or some unexpected state). 

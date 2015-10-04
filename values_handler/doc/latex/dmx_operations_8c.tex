@@ -1,0 +1,171 @@
+\hypertarget{dmx_operations_8c}{}\section{values\+\_\+handler/src/dmx\+Operations.c File Reference}
+\label{dmx_operations_8c}\index{values\+\_\+handler/src/dmx\+Operations.\+c@{values\+\_\+handler/src/dmx\+Operations.\+c}}
+
+
+Handles the transitions between two states of the spotlights.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$stdint.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+{\ttfamily \#include $<$sys/time.\+h$>$}\\*
+{\ttfamily \#include $<$stdbool.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}utils.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}dmx.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}constants.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}dmx\+Operations.\+h\char`\"{}}\\*
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{dmx_operations_8h_aef1cca9c660476f24af7a1d98c2c63cf}{dmx\+\_\+exec\+\_\+t} $\ast$ \hyperlink{dmx_operations_8c_a324efd7876d9a8c97ee5e85379db1ecf}{decode\+D\+M\+X} (uint8\+\_\+t values\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Decodes the fetched web values. \end{DoxyCompactList}\item 
+void \hyperlink{dmx_operations_8c_a638da49cc3972c71033e9116e2e81582}{execute\+D\+M\+X} (uint8\+\_\+t start\+Values\mbox{[}$\,$\mbox{]}, \hyperlink{dmx_operations_8h_aef1cca9c660476f24af7a1d98c2c63cf}{dmx\+\_\+exec\+\_\+t} $\ast$in)
+\begin{DoxyCompactList}\small\item\em Runs the fetched and decoded transtion. \end{DoxyCompactList}\item 
+void \hyperlink{dmx_operations_8c_a5fedf4ac8d5e98ec44ee4ea4179eb136}{execute\+Regular} (\hyperlink{dmx_operations_8h_aef1cca9c660476f24af7a1d98c2c63cf}{dmx\+\_\+exec\+\_\+t} $\ast$in, uint8\+\_\+t start\+Values\mbox{[}$\,$\mbox{]}, double($\ast$coef\+\_\+func)(const double))
+\begin{DoxyCompactList}\small\item\em Runs a regular transition. \end{DoxyCompactList}\item 
+void \hyperlink{dmx_operations_8c_aa49e7a9ea589a10a736ebbc4b0ec3993}{execute\+Strobe} (\hyperlink{dmx_operations_8h_aef1cca9c660476f24af7a1d98c2c63cf}{dmx\+\_\+exec\+\_\+t} $\ast$in, uint8\+\_\+t start\+Values\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Executes a strobe effect transtion. \end{DoxyCompactList}\item 
+void \hyperlink{dmx_operations_8c_a4d885bdc095012e6d8c2b8ba397fe5cc}{start\+Time} (struct timeval $\ast$t0)
+\begin{DoxyCompactList}\small\item\em Starts the timer. \end{DoxyCompactList}\item 
+int \hyperlink{dmx_operations_8c_a102fe073a9c88a5c55dbd82b5ef1349d}{update\+Time} (struct timeval $\ast$t0, struct timeval $\ast$t1, unsigned int sleep\+Time)
+\begin{DoxyCompactList}\small\item\em Handles updates between transition steps. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Handles the transitions between two states of the spotlights. 
+
+\begin{DoxyAuthor}{Author}
+Louis Blin 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+June 2015 
+\end{DoxyDate}
+
+
+\subsection{Function Documentation}
+\hypertarget{dmx_operations_8c_a324efd7876d9a8c97ee5e85379db1ecf}{}\index{dmx\+Operations.\+c@{dmx\+Operations.\+c}!decode\+D\+M\+X@{decode\+D\+M\+X}}
+\index{decode\+D\+M\+X@{decode\+D\+M\+X}!dmx\+Operations.\+c@{dmx\+Operations.\+c}}
+\subsubsection[{decode\+D\+M\+X(uint8\+\_\+t values[])}]{\setlength{\rightskip}{0pt plus 5cm}{\bf dmx\+\_\+exec\+\_\+t}$\ast$ decode\+D\+M\+X (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t}]{values\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\label{dmx_operations_8c_a324efd7876d9a8c97ee5e85379db1ecf}
+
+
+Decodes the fetched web values. 
+
+Decode the fetched values and creates a {\ttfamily dmx\+\_\+exec\+\_\+t} structure that represents the transition from the current state to the one described by the fetched values. N\+B\+: If the transition fade time interval is out of range, it is set to 1.
+
+
+\begin{DoxyParams}{Parameters}
+{\em values} & the fetched web values. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the {\ttfamily dmx\+\_\+exec\+\_\+t} struct object describing the transition. 
+\end{DoxyReturn}
+\hypertarget{dmx_operations_8c_a638da49cc3972c71033e9116e2e81582}{}\index{dmx\+Operations.\+c@{dmx\+Operations.\+c}!execute\+D\+M\+X@{execute\+D\+M\+X}}
+\index{execute\+D\+M\+X@{execute\+D\+M\+X}!dmx\+Operations.\+c@{dmx\+Operations.\+c}}
+\subsubsection[{execute\+D\+M\+X(uint8\+\_\+t start\+Values[], dmx\+\_\+exec\+\_\+t $\ast$in)}]{\setlength{\rightskip}{0pt plus 5cm}void execute\+D\+M\+X (
+\begin{DoxyParamCaption}
+\item[{uint8\+\_\+t}]{start\+Values\mbox{[}$\,$\mbox{]}, }
+\item[{{\bf dmx\+\_\+exec\+\_\+t} $\ast$}]{in}
+\end{DoxyParamCaption}
+)}\label{dmx_operations_8c_a638da49cc3972c71033e9116e2e81582}
+
+
+Runs the fetched and decoded transtion. 
+
+Execute the transition from the current spotlights state to the new one.
+
+
+\begin{DoxyParams}{Parameters}
+{\em start\+Values} & the current spotlight state. \\
+\hline
+{\em in} & the structure representing the transition to run. \\
+\hline
+\end{DoxyParams}
+\hypertarget{dmx_operations_8c_a5fedf4ac8d5e98ec44ee4ea4179eb136}{}\index{dmx\+Operations.\+c@{dmx\+Operations.\+c}!execute\+Regular@{execute\+Regular}}
+\index{execute\+Regular@{execute\+Regular}!dmx\+Operations.\+c@{dmx\+Operations.\+c}}
+\subsubsection[{execute\+Regular(dmx\+\_\+exec\+\_\+t $\ast$in, uint8\+\_\+t start\+Values[], double($\ast$coef\+\_\+func)(const double))}]{\setlength{\rightskip}{0pt plus 5cm}void execute\+Regular (
+\begin{DoxyParamCaption}
+\item[{{\bf dmx\+\_\+exec\+\_\+t} $\ast$}]{in, }
+\item[{uint8\+\_\+t}]{start\+Values\mbox{[}$\,$\mbox{]}, }
+\item[{double($\ast$)(const double)}]{coef\+\_\+func}
+\end{DoxyParamCaption}
+)}\label{dmx_operations_8c_a5fedf4ac8d5e98ec44ee4ea4179eb136}
+
+
+Runs a regular transition. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em in} & the structure reprensenting the transition \\
+\hline
+{\em start\+Values} & the current state of the spotlights. \\
+\hline
+{\em coef\+\_\+func} & the a pointer to the function describing the speed at which the transtion is done. \\
+\hline
+\end{DoxyParams}
+\hypertarget{dmx_operations_8c_aa49e7a9ea589a10a736ebbc4b0ec3993}{}\index{dmx\+Operations.\+c@{dmx\+Operations.\+c}!execute\+Strobe@{execute\+Strobe}}
+\index{execute\+Strobe@{execute\+Strobe}!dmx\+Operations.\+c@{dmx\+Operations.\+c}}
+\subsubsection[{execute\+Strobe(dmx\+\_\+exec\+\_\+t $\ast$in, uint8\+\_\+t start\+Values[])}]{\setlength{\rightskip}{0pt plus 5cm}void execute\+Strobe (
+\begin{DoxyParamCaption}
+\item[{{\bf dmx\+\_\+exec\+\_\+t} $\ast$}]{in, }
+\item[{uint8\+\_\+t}]{start\+Values\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\label{dmx_operations_8c_aa49e7a9ea589a10a736ebbc4b0ec3993}
+
+
+Executes a strobe effect transtion. 
+
+It flashes the received values and restores the original values at the end of the effect.
+
+
+\begin{DoxyParams}{Parameters}
+{\em in} & the structure reprenting the transition\+: effet last {\ttfamily in-\/$>$fade\+\_\+ti} seconds, and flashes at a fixed frequency of 1000/\+S\+T\+R\+O\+B\+E\+\_\+\+P\+E\+R\+I\+O\+D (N\+B\+: S\+T\+R\+O\+B\+E\+\_\+\+P\+E\+R\+I\+O\+D is in millis). \\
+\hline
+{\em start\+Values} & the initial values, that will be restored at the end. \\
+\hline
+\end{DoxyParams}
+\hypertarget{dmx_operations_8c_a4d885bdc095012e6d8c2b8ba397fe5cc}{}\index{dmx\+Operations.\+c@{dmx\+Operations.\+c}!start\+Time@{start\+Time}}
+\index{start\+Time@{start\+Time}!dmx\+Operations.\+c@{dmx\+Operations.\+c}}
+\subsubsection[{start\+Time(struct timeval $\ast$t0)}]{\setlength{\rightskip}{0pt plus 5cm}void start\+Time (
+\begin{DoxyParamCaption}
+\item[{struct timeval $\ast$}]{t0}
+\end{DoxyParamCaption}
+)}\label{dmx_operations_8c_a4d885bdc095012e6d8c2b8ba397fe5cc}
+
+
+Starts the timer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t0} & a pointer that is assigned to the timer. \\
+\hline
+\end{DoxyParams}
+\hypertarget{dmx_operations_8c_a102fe073a9c88a5c55dbd82b5ef1349d}{}\index{dmx\+Operations.\+c@{dmx\+Operations.\+c}!update\+Time@{update\+Time}}
+\index{update\+Time@{update\+Time}!dmx\+Operations.\+c@{dmx\+Operations.\+c}}
+\subsubsection[{update\+Time(struct timeval $\ast$t0, struct timeval $\ast$t1, unsigned int sleep\+Time)}]{\setlength{\rightskip}{0pt plus 5cm}int update\+Time (
+\begin{DoxyParamCaption}
+\item[{struct timeval $\ast$}]{t0, }
+\item[{struct timeval $\ast$}]{t1, }
+\item[{unsigned int}]{sleep\+Time}
+\end{DoxyParamCaption}
+)}\label{dmx_operations_8c_a102fe073a9c88a5c55dbd82b5ef1349d}
+
+
+Handles updates between transition steps. 
+
+Pauses the current thread until the next transition step, and stops the timer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em t0} & the timer since the beginning of the cycle. \\
+\hline
+{\em t1} & the timer at the end of the cycle. \\
+\hline
+{\em sleep\+Time} & the time during which the thread must be paused. \\
+\hline
+\end{DoxyParams}

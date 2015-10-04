@@ -1,0 +1,11 @@
+\hypertarget{index_Presentation}{}\section{Presentation}\label{index_Presentation}
+This program fetches the values for the spolights on the web and handles the transition between different spotlight states.\hypertarget{index_Notes}{}\section{Notes}\label{index_Notes}
+Tools\+: c\+U\+R\+L request performed using the libcurl library to fetch the values from the web interface.
+
+Edge cases behaviour\+:
+\begin{DoxyItemize}
+\item No service\+: leave the spotlights with their original values.
+\item Invalid range of value \mbox{[}0..255\mbox{]}\+: ignore new stream.
+\item Invalid transition type \{linear, cres, decres, cres-\/decres\}\+: set transition to default (linear).
+\item Invalid fade time interval \mbox{[}1..255\mbox{]}\+: set it to 1. 
+\end{DoxyItemize}
