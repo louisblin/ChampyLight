@@ -31,10 +31,12 @@ security:
 
     access_control:
             # public access to ^/render
+            
+            # DISABLED
             # require ROLE_DEMO to view web interface
             # require ROLE_ADMIN to persist changes in database
-            - { path: ^/patch, roles: ROLE_DEMO }
-            - { path: ^/control, roles: ROLE_DEMO }
-            - { path: ^/add_patch, roles: ROLE_ADMIN }
-            - { path: ^/delete_patch, roles: ROLE_ADMIN }
-            - { path: ^/submit_values, roles: ROLE_ADMIN }
+            #- { path: ^/patch, roles: ROLE_DEMO }
+            #- { path: ^/control, roles: ROLE_DEMO }
+            #- { path: ^/add_patch, roles: ROLE_ADMIN }
+            #- { path: ^/delete_patch, roles: ROLE_ADMIN }
+            #- { path: ^/submit_values, roles: ROLE_ADMIN }
