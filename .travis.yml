@@ -1,0 +1,30 @@
+sudo: required
+
+language: c
+
+compiler:
+- clang
+- gcc
+
+services:
+- docker
+
+before_install:
+# Need to find the branch name containing the last commit
+# `git branch` has format '  <my branch>' so need to remove the 2 leading spaces:
+- branch=$(git branch --contains `git rev-parse HEAD` | tail -n 1)
+- docker build -t louisleblin/champylight --build-arg GIT_CHECKOUT_TO="${branch:2}" .
+
+script:
+- docker run louisleblin/champylight /bin/sh -c "make -C /root/champylight/build cxxtest"
+
+# Publish on DockerHub
+deploy:
+  provider: script
+  script: ./scripts/docker_push
+  on:
+    branch: master
+
+notifications:
+  email: false
+  slack: champylight:m0KaztICbNRSLHf2wrNLapEy

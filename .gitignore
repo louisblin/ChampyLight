@@ -1,22 +1,7 @@
-#ignore temp files
+#ignore builds
+**/build
+
+#ignore other junk/useless files
 *~
-
-#ignore pdf/txt files (just keep source files)
-*.pdf
-*.txt
-
-#ignore junk files from compiling C code
-*.o
-Champylight/src/champylight
-
-#ignore junk files from compiling C libs
-*.a
-
-#ignore executables
-*.bin
-values_handler/bin/champylight
-deamon/bin/dmxd.bin
-
-#ignore other junk files
 *.backup
 *.swp
