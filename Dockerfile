@@ -22,7 +22,6 @@ RUN apt-get upgrade -y && \
 #
 
 # Clone the git repository and checkout to the current branch
-ARG GIT_CHECKOUT_TO
-RUN echo "==> "$GIT_CHECKOUT_TO
-RUN dir=/root/champylight       && git clone -b "$GIT_CHECKOUT_TO" https://github.com/louisblin/ChampyLight.git $dir
-RUN bld=/root/champylight/build && rm -rf $bld && mkdir $bld && cd $bld && cmake ../ && make
+WORKDIR /app
+COPY . /app
+RUN rm -rf build && mkdir build && cd build && cmake ../ && make
